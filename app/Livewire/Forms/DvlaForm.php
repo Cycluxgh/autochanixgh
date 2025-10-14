@@ -28,7 +28,7 @@ class DvlaForm extends Form
     public $front_axle_load;
     public $middle_axle_load;
     public $rear_axle_load;
-    public $nvm;
+    public $nvw;
     public $gvw;
     public $load;
     public $persons_number;
@@ -40,6 +40,7 @@ class DvlaForm extends Form
     public $fuel;
     public $use;
     public $entry_date;
+    public ?Dvla $dvla;
 
     public function rules()
     {
@@ -50,11 +51,52 @@ class DvlaForm extends Form
         ];
     }
 
+    public function setDvla(Dvla $dvla)
+    {
+        $this->dvla = $dvla;
+        $this->vehicle_number = $dvla->vehicle_number;
+        $this->vehicle_make = $dvla->vehicle_make;
+        $this->colour = $dvla->colour;
+        $this->model = $dvla->model;
+        $this->type = $dvla->type;
+        $this->chassis_number = $dvla->chassis_number;
+        $this->origin_country = $dvla->origin_country;
+        $this->manufacture_year = $dvla->manufacture_year;
+        $this->length = $dvla->length;
+        $this->width = $dvla->width;
+        $this->height = $dvla->height;
+        $this->axles_number = $dvla->axles_number;
+        $this->wheels_number = $dvla->wheels_number;
+        $this->front_tyres = $dvla->front_tyres;
+        $this->middle_tyres = $dvla->middle_tyres;
+        $this->rear_tyres = $dvla->rear_tyres;
+        $this->front_axle_load = $dvla->front_axle_load;
+        $this->middle_axle_load = $dvla->middle_axle_load;
+        $this->rear_axle_load = $dvla->rear_axle_load;
+        $this->nvw = $dvla->nvw;
+        $this->gvw = $dvla->gvw;
+        $this->load = $dvla->load;
+        $this->persons_number = $dvla->persons_number;
+        $this->engine_make = $dvla->engine_make;
+        $this->engine_number = $dvla->engine_number;
+        $this->cylinders_number = $dvla->cylinders_number;
+        $this->cc = $dvla->cc;
+        $this->hp = $dvla->hp;
+        $this->fuel = $dvla->fuel;
+        $this->use = $dvla->use;
+        $this->entry_date = $dvla->entry_date;
+    }
+
     public function store()
     {
         $form = $this->all();
         $form['customer_id'] = $form['customer_id']['value'];
         Dvla::create($form);
         $this->reset();
+    }
+
+    public function update()
+    {
+        $this->dvla->update($this->except('customer_id'));
     }
 }

@@ -102,7 +102,7 @@
                         <div class="border border-dark rounded-2 me-2 widget-icons-sections">
                             <i data-feather="bar-chart" class="widgets-icons"></i>
                         </div>
-                        <h5 class="card-title mb-0">Monthly Sales</h5>
+                        <h5 class="card-title mb-0">Chart</h5>
                     </div>
                 </div>
 

@@ -50,7 +50,7 @@
                                         <i class="mdi mdi-eye-outline fs-16 align-middle text-info"
                                            style="cursor: pointer"></i>
                                     </a>
-                                    <a href="#"
+                                    <a href="{{ route('drivers.edit', ['dvlaId' => \App\Livewire\Drivers\Edit::encrypt($dvla->id)]) }}"
                                        type="button" class="btn btn-sm" data-bs-toggle="tooltip"
                                        data-bs-placement="top" data-bs-title="Edit">
                                         <i class="mdi mdi-pencil fs-16 align-middle text-primary"

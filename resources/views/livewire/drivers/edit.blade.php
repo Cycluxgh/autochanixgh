@@ -1,9 +1,9 @@
 <x-slot:title>DVLA</x-slot>
-<x-slot:page_title>Add DVLA</x-slot>
+<x-slot:page_title>Edit DVLA</x-slot>
 <div>
     <div class="card">
         <div class="card-body">
-            <form class="row g-3" wire:submit="save">
+            <form class="row g-3" wire:submit="update">
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session('success')}}
@@ -17,17 +17,8 @@
                     </div>
                 @endif
                 <div class="col-md-6">
-                    <label for="customer-list" class="form-label">Select a customer</label> <span class="text-danger">*</span>
-                    <select class="form-select message-customers" data-placeholder="Select a customer" required wire:model="form.customer_id">
-                        @foreach($customers as $customer)
-                            <option value="{{ $customer->id }}">{{ ucfirst($customer->name) }}</option>
-                        @endforeach
-                    </select>
-                    @error('form.customer_id')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
+                    <label for="customer-list" class="form-label">Customer</label> <span class="text-danger">*</span>
+                    <input type="text" class="form-control" readonly wire:model="customer">
                 </div>
                 <div class="col-md-6">
                     <label for="vehicle-number" class="form-label">Vehicle Number</label> <span class="text-danger">*</span>
@@ -38,35 +29,35 @@
                     </div>
                     @enderror
                 </div>
-{{--                <div class="col-md-3">--}}
-{{--                    <label for="owner" class="form-label">Owner</label> <span class="text-danger">*</span>--}}
-{{--                    <input type="text" class="form-control" id="owner" wire:model="owner" required>--}}
-{{--                    @error('owner')--}}
-{{--                    <div class="invalid-feedback">--}}
-{{--                        {{ $message }}--}}
-{{--                    </div>--}}
-{{--                    @enderror--}}
-{{--                </div>--}}
-{{--                <div class="col-md-3">--}}
-{{--                    <label for="post-address" class="form-label">Post Address</label> <span class="text-danger">*</span>--}}
-{{--                    <textarea type="text" class="form-control" id="post-address" aria-describedby="post address" wire:model="post_address" required>--}}
-{{--                    </textarea>--}}
-{{--                    @error('post_address')--}}
-{{--                    <div class="invalid-feedback">--}}
-{{--                        {{ $message }}--}}
-{{--                    </div>--}}
-{{--                    @enderror--}}
-{{--                </div>--}}
-{{--                <div class="col-md-3">--}}
-{{--                    <label for="residential-address" class="form-label">Residential Address</label> <span class="text-danger">*</span>--}}
-{{--                    <textarea type="text" class="form-control" id="residential-address" aria-describedby="residential address" wire:model="residential_address" required>--}}
-{{--                    </textarea>--}}
-{{--                    @error('residential_address')--}}
-{{--                    <div class="invalid-feedback">--}}
-{{--                        {{ $message }}--}}
-{{--                    </div>--}}
-{{--                    @enderror--}}
-{{--                </div>--}}
+                {{--                <div class="col-md-3">--}}
+                {{--                    <label for="owner" class="form-label">Owner</label> <span class="text-danger">*</span>--}}
+                {{--                    <input type="text" class="form-control" id="owner" wire:model="owner" required>--}}
+                {{--                    @error('owner')--}}
+                {{--                    <div class="invalid-feedback">--}}
+                {{--                        {{ $message }}--}}
+                {{--                    </div>--}}
+                {{--                    @enderror--}}
+                {{--                </div>--}}
+                {{--                <div class="col-md-3">--}}
+                {{--                    <label for="post-address" class="form-label">Post Address</label> <span class="text-danger">*</span>--}}
+                {{--                    <textarea type="text" class="form-control" id="post-address" aria-describedby="post address" wire:model="post_address" required>--}}
+                {{--                    </textarea>--}}
+                {{--                    @error('post_address')--}}
+                {{--                    <div class="invalid-feedback">--}}
+                {{--                        {{ $message }}--}}
+                {{--                    </div>--}}
+                {{--                    @enderror--}}
+                {{--                </div>--}}
+                {{--                <div class="col-md-3">--}}
+                {{--                    <label for="residential-address" class="form-label">Residential Address</label> <span class="text-danger">*</span>--}}
+                {{--                    <textarea type="text" class="form-control" id="residential-address" aria-describedby="residential address" wire:model="residential_address" required>--}}
+                {{--                    </textarea>--}}
+                {{--                    @error('residential_address')--}}
+                {{--                    <div class="invalid-feedback">--}}
+                {{--                        {{ $message }}--}}
+                {{--                    </div>--}}
+                {{--                    @enderror--}}
+                {{--                </div>--}}
                 <div class="col-md-6">
                     <label for="make-vehicle" class="form-label">Make of Vehicle</label>
                     <input type="text" class="form-control" id="make-vehicle" aria-describedby="make of vehicle" wire:model="form.vehicle_make">
@@ -355,7 +346,7 @@
                 </div>
                 <div class="col-12">
                     <button class="btn btn-primary float-end" type="submit">
-                        Submit
+                        Save
                         <span class="spinner-grow spinner-grow-sm" aria-hidden="true" wire:loading></span>
                     </button>
                 </div>

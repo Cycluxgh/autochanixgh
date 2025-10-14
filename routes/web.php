@@ -18,6 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('drivers/index', \App\Livewire\Drivers\Index::class)->name('drivers.index');
     Route::get('drivers/create', \App\Livewire\Drivers\Create::class)->name('drivers.create');
+    Route::get('drivers/{dvlaId}/edit', \App\Livewire\Drivers\Edit::class)->name('drivers.edit');
 
     Route::get('diagnosis/index', \App\Livewire\Diagnosis\Index::class)->name('diagnosis.index');
     Route::get('diagnosis/create', \App\Livewire\Diagnosis\Create::class)->name('diagnosis.create');
