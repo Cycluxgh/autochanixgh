@@ -1,5 +1,5 @@
-<x-slot:title>Customer</x-slot>
-<x-slot:page_title>Add Customer</x-slot>
+<x-slot:title>Company</x-slot>
+<x-slot:page_title>Add Company</x-slot>
 <div>
     <div class="row">
         <div class="col-xl-12">
@@ -19,7 +19,7 @@
                     @endif
                     <form class="novalidated" wire:submit.prevent="save">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name</label> <span class="text-danger">*</span>
                                     <input class="form-control" id="name" placeholder="Enter name" required wire:model="name">
@@ -31,7 +31,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class=" mb-3">
                                     <label class="form-label" for="email">Email</label>
                                     <input type="text" class="form-control" id="email" placeholder="Enter email" wire:model="email">
@@ -42,10 +42,8 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Phone number</label> <span class="text-danger">*</span>
                                     <input type="text" class="form-control" id="phone" maxlength="10" aria-label="phone number" placeholder="Enter phone number" required wire:model="phone">
@@ -57,59 +55,25 @@
                                 </div>
                             </div>
 
-                            <div class="col-6">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4">
                                 <div class="mb-3">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select class="form-select" id="gender" aria-label="gender" wire:model="gender">
-                                        <option>Choose...</option>
-                                        @foreach(\App\GenderEnum::cases() as $gender)
-                                            <option value="{{ $gender->value }}">{{ ucfirst($gender->value) }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('gender')
+                                    <label for="ceo" class="form-label">CEO</label>
+                                    <input type="text" class="form-control" id="work-place" aria-label="CEO" placeholder="Enter CEO" wire:model="ceo">
+                                    @error('ceo')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                     @enderror
                                 </div>
                             </div>
-                        </div>
 
-
-                        <div class="row">
-                            <div class="col-6"><div class="mb-3">
-                                    <label for="marital-status" class="form-label">Marital Status</label>
-                                    <select class="form-select" id="marital-status" aria-label="marital status" wire:model="marital_status">
-                                        <option>Choose...</option>
-                                        @foreach(\App\MaritalStatusEnum::cases() as $status)
-                                            <option value="{{ $status->value }}">{{ ucfirst($status->value) }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('marital_status')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div></div>
-
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="mb-3">
-                                    <label for="work-place" class="form-label">Workplace</label>
-                                    <input type="text" class="form-control" id="work-place" aria-label="work place" placeholder="Enter work place" wire:model="work_place">
-                                    @error('work_place')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="image" class="form-label">Image</label>
-                                    <input type="file" class="form-control" id="image" aria-label="image" accept="image/*" wire:model="image">
+                                    <label for="logo" class="form-label">Logo</label>
+                                    <input type="file" class="form-control" id="logo" aria-label="logo" accept="image/*" wire:model="logo">
                                     @error('image')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -118,7 +82,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="mb-3">
                                     <label for="address" class="form-label">Address</label>
                                     <textarea class="form-control" id="address" aria-label="address" placeholder="Enter address" wire:model="address"></textarea>
@@ -189,3 +153,4 @@
         </div> <!-- end col -->
     </div>
 </div>
+

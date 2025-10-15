@@ -3,7 +3,7 @@
 <div>
     <div class="card">
         <div class="card-body">
-            <form class="row g-3" wire:submit="save">
+            <form class="row g-3" wire:submit.prevent="save">
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session('success')}}
@@ -17,8 +17,8 @@
                     </div>
                 @endif
                 <div class="col-md-6">
-                    <label for="customer-list" class="form-label">Select a customer</label> <span class="text-danger">*</span>
-                    <select class="form-select message-customers" data-placeholder="Select a customer" required wire:model="form.customer_id">
+                    <label for="customer-list" class="form-label">Select existing customer</label> <span class="text-danger">*</span>
+                    <select class="form-select message-customers" data-placeholder="Select a customer" required wire:model="form.customer_id" wire:change.prevent="handleCustomerChange($event.target.value)">
                         @foreach($customers as $customer)
                             <option value="{{ $customer->id }}">{{ ucfirst($customer->name) }}</option>
                         @endforeach
@@ -30,8 +30,17 @@
                     @enderror
                 </div>
                 <div class="col-md-6">
-                    <label for="vehicle-number" class="form-label">Vehicle Number</label> <span class="text-danger">*</span>
-                    <input type="text" class="form-control" id="vehicle-number" wire:model="form.vehicle_number" required>
+                    <label for="vehicle-number" class="form-label">Select customer vehicle number</label> <span class="text-danger">*</span>
+                    <select class="form-select vehicle-numbers" data-placeholder="Select your vehicle number" required wire:model="form.vehicle_number">
+                        @if(count($vehicleNumbers) === 0)
+                            <option>No vehicle numbers available</option>
+                        @else
+                            @if(count($vehicleNumbers) >= 1)<option>Choose...</option>@endif
+                            @foreach($vehicleNumbers as $vehicleNumber)
+                                <option value="{{ $vehicleNumber }}">{{ $vehicleNumber }}</option>
+                            @endforeach
+                        @endif
+                    </select>
                     @error('form.vehicle_number')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -123,7 +132,7 @@
                 </div>
                 <div class="col-md-6">
                     <label for="manufacture-year" class="form-label">Year of manufacture</label>
-                    <input type="date" class="form-control" id="manufacture-year" aria-describedby="year of manufacture" wire:model="form.manufacture_year">
+                    <input type="text" class="form-control" id="manufacture-year" placeholder="Select date year" aria-describedby="year of manufacture" wire:model="form.manufacture_year">
                     @error('form.manufacture_year')
                     <div class="invalid-feedback">
                         {{ $message }}

@@ -12,6 +12,7 @@ class Insurance extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'customer_id',
+        'vehicle_number',
         'inception',
         'expiration',
     ];

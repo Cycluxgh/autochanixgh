@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use function PHPSTORM_META\map;
 
 class Edit extends Component
 {
@@ -25,10 +26,14 @@ class Edit extends Component
     public $image;
     private $path;
 
-    #[Validate('required|date:Y-m-d')]
-    public $inception;
-    #[Validate('required|date:Y-m-d')]
-    public $expiration;
+    public $insurances = [
+        [
+            'id' => '',
+            'vehicle_number' => '',
+            'inception' => '',
+            'expiration' => '',
+        ]
+    ];
 
     public Customer $customer;
     public string $customerId;
@@ -44,9 +49,14 @@ class Edit extends Component
         $this->work_place = $this->customer->work_place;
         $this->address = $this->customer->address;
 
-        $insurance = $this->customer->insurance;
-        $this->inception = $insurance?->inception;
-        $this->expiration = $insurance?->expiration;
+        $this->insurances = $this->customer->insurances->map(function ($insurance) {
+            return [
+                    'id' => $insurance->id,
+                    'vehicle_number' => $insurance->vehicle_number,
+                    'inception' => $insurance->inception,
+                    'expiration' => $insurance->expiration,
+            ];
+        })->toArray();
     }
 
     public function update()
@@ -69,10 +79,17 @@ class Edit extends Component
                     'image' => $this->path ?: $this->customer->image,
                 ]);
 
-                $this->customer->insurance()->update([
-                    'inception' => $this->inception,
-                    'expiration' => $this->expiration,
-                ]);
+                $upsertData = collect($this->insurances)->map(function ($insurance) {
+                    return array_merge($insurance, [
+                        'customer_id' => $this->customer->id,
+                    ]);
+                })->toArray();
+
+                $uniqueColumns = ['id'];
+                $updateColumns = ['vehicle_number', 'inception', 'expiration'];
+
+                Insurance::upsert($upsertData, $uniqueColumns, $updateColumns);
+
             });
 
             session()->flash('success', 'Customer information updated successfully.');
@@ -80,6 +97,22 @@ class Edit extends Component
             session()->flash('error', "Something went wrong: {$e->getMessage()}");
         }
 
+    }
+
+    public function addInsurance()
+    {
+        $this->insurances[] = [
+            'id' => null,
+            'vehicle_number' => '',
+            'inception' => '',
+            'expiration' => '',
+        ];
+    }
+
+    public function removeInsurance($index)
+    {
+        unset($this->insurances[$index]);
+        $this->insurances = array_values($this->insurances);
     }
 
     public function render()

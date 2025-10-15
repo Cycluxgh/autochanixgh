@@ -22,7 +22,7 @@
                         <th>Gender</th>
                         <th>Marital Status</th>
                         <th>Work Place</th>
-                        <th>Insurance Expiration</th>
+                        <th>Total Insured Vehicles</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -31,17 +31,12 @@
                         <tr>
                             <td><img src="{{asset($customer?->image ?? 'assets/images/logo-sm.png')}}" alt="" class="img-fluid rounded-circle avatar-sm"></td>
                             <td>{{ ucfirst($customer->name) }}</td>
-                            <td>{{ ucfirst($customer->email ?? 'No Email') }}</td>
+                            <td>{{ $customer->email ?? 'No Email' }}</td>
                             <td>{{ ucfirst($customer->phone) }}</td>
                             <td>{{ ucfirst($customer->gender ?? 'No Gender') }}</td>
                             <td>{{ ucfirst($customer->marital_status) }}</td>
                             <td>{{ ucfirst($customer->work_place ?? 'No Work place') }}</td>
-                            <td>
-                                <span
-                                    class="text-{{ \Carbon\Carbon::parse($customer?->insurance?->expiration) <= \Carbon\Carbon::now() ? 'danger' : 'success' }}">
-                                    {{ $customer?->insurance?->expiration ? \Carbon\Carbon::parse($customer?->insurance?->expiration)->toFormattedDayDateString() : null }}
-                                </span>
-                            </td>
+                            <td>{{ count($customer->insurances) }}</td>
                             <td>
                                 <span>
                                     <a href="{{ route('customers.show', ['customerId' => \App\Livewire\Customers\Index::encrypt($customer->id)]) }}"

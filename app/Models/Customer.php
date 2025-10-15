@@ -30,8 +30,8 @@ class Customer extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function insurance(): HasOne
+    public function insuranceS(): HasMany
     {
-        return $this->hasOne(Insurance::class);
+        return $this->hasMany(Insurance::class);
     }
 }

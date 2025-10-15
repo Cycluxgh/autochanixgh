@@ -16,6 +16,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('customers/{customerId}/edit', Edit::class)->name('customers.edit');
     Route::get('customers/{customerId}/show', Show::class)->name('customers.show');
 
+    Route::get('companies/index', Index::class)->name('companies.index');
+    Route::get('companies/create', \App\Livewire\Companies\Create::class)->name('companies.create');
+
     Route::get('drivers/index', \App\Livewire\Drivers\Index::class)->name('drivers.index');
     Route::get('drivers/create', \App\Livewire\Drivers\Create::class)->name('drivers.create');
     Route::get('drivers/{dvlaId}/edit', \App\Livewire\Drivers\Edit::class)->name('drivers.edit');

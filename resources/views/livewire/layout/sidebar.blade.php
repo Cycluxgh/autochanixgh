@@ -89,6 +89,24 @@
                 </li>
 
                 <li>
+                    <a href="#sidebarIcons" data-bs-toggle="collapse">
+                        <i data-feather="globe"></i>
+                        <span> Companies </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sidebarIcons">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('companies.create') }}" class="tp-link">Add</a>
+                            </li>
+                            <li>
+                                <a href="icons-mdi.html" class="tp-link">List</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li>
                     <a href="#sidebarAdvancedUI" data-bs-toggle="collapse">
                         <i data-feather="home"></i>
                         <span> DVLA </span>
@@ -285,24 +303,6 @@
 {{--                        <i data-feather="aperture"></i>--}}
 {{--                        <span> Widgets </span>--}}
 {{--                    </a>--}}
-{{--                </li>--}}
-
-{{--                <li>--}}
-{{--                    <a href="#sidebarIcons" data-bs-toggle="collapse">--}}
-{{--                        <i data-feather="award"></i>--}}
-{{--                        <span> Icons </span>--}}
-{{--                        <span class="menu-arrow"></span>--}}
-{{--                    </a>--}}
-{{--                    <div class="collapse" id="sidebarIcons">--}}
-{{--                        <ul class="nav-second-level">--}}
-{{--                            <li>--}}
-{{--                                <a href="icons-feather.html" class="tp-link">Feather Icons</a>--}}
-{{--                            </li>--}}
-{{--                            <li>--}}
-{{--                                <a href="icons-mdi.html" class="tp-link">Material Design Icons</a>--}}
-{{--                            </li>--}}
-{{--                        </ul>--}}
-{{--                    </div>--}}
 {{--                </li>--}}
 
 {{--                <li>--}}

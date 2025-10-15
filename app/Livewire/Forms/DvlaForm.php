@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Forms;
 
-use App\Models\dvla;
+use App\Models\Dvla;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -90,9 +90,43 @@ class DvlaForm extends Form
     public function store()
     {
         $form = $this->all();
+//        dd($form);
         $form['customer_id'] = $form['customer_id']['value'];
+//        $form['vehicle_number'] = $form['vehicle_number']['value'];
+
         Dvla::create($form);
-        $this->reset();
+        $this->reset(
+  'vehicle_make',
+            'colour',
+            'model',
+            'type',
+            'chassis_number',
+            'origin_country',
+            'manufacture_year',
+            'length',
+            'width',
+            'height',
+            'axles_number',
+            'wheels_number',
+            'front_tyres',
+            'middle_tyres',
+            'rear_tyres',
+            'front_axle_load',
+            'middle_axle_load',
+            'rear_axle_load',
+            'nvw',
+            'gvw',
+            'load',
+            'persons_number',
+            'engine_make',
+            'engine_number',
+            'cylinders_number',
+            'cc',
+            'hp',
+            'fuel',
+            'use',
+            'entry_date',
+        );
     }
 
     public function update()

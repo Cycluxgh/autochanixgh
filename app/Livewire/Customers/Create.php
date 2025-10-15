@@ -27,10 +27,23 @@ class Create extends Component
     public $image;
     private $path;
 
-    #[Validate('required|date:Y-m-d|before_or_equal:today')]
-    public $inception;
-    #[Validate('required|date:Y-m-d|after:today')]
-    public $expiration;
+    public $insurances = [
+        ['vehicle_number' => '', 'inception' => '', 'expiration' => '']
+    ];
+    public function addInsurance()
+    {
+        $this->insurances[] = [
+            'vehicle_number' => '',
+            'inception' => '',
+            'expiration' => '',
+        ];
+    }
+
+    public function removeInsurance($index)
+    {
+        unset($this->insurances[$index]);
+        $this->insurances = array_values($this->insurances);
+    }
 
     public function save()
     {
@@ -52,11 +65,14 @@ class Create extends Component
                     'image' => $this->path,
                 ]);
 
-                Insurance::create([
-                    'customer_id' => $customer->id,
-                    'inception' => $this->inception,
-                    'expiration' => $this->expiration,
-                ]);
+                foreach ($this->insurances as $insurance) {
+                    Insurance::create([
+                       'customer_id' => $customer->id,
+                       'vehicle_number' => $insurance['vehicle_number'],
+                       'inception' => $insurance['inception'],
+                       'expiration' => $insurance['expiration'],
+                    ]);
+                }
             });
 
             $this->reset();

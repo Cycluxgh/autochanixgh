@@ -132,32 +132,55 @@
                             </div>
                         </div>
 
-                        <h6>Automobile Insurance</h6>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="work-place" class="form-label">Inception</label> <span class="text-danger">*</span>
-                                    <input type="date" class="form-control" id="inception" aria-label="inception" required placeholder="Enter inception" wire:model="inception">
-                                    @error('inception')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="work-place" class="form-label">Expiration</label> <span class="text-danger">*</span>
-                                    <input type="date" class="form-control" id="expiration" aria-label="expiration" required placeholder="Enter expiration" wire:model="expiration">
-                                    @error('expiration')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div>
-                            </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Automobile Insurance</h5>
+                            <button type="button" class="btn btn-primary" wire:click="addInsurance">Add More Insurance</button>
                         </div>
+
+                        @foreach($insurances as $index => $insurance)
+{{--                            @php dd($insurance->vehicle_number);@endphp--}}
+                            <div class="row d-flex align-items-center">
+                                <div class="col-3">
+                                    <div class="mb-3">
+                                        <label for="vehicle-number" class="form-label">Vehicle Number</label> <span class="text-danger">*</span>
+                                        <input type="text" class="form-control" id="vehicle-number" aria-label="vehicle number" required placeholder="Enter vehicle number" wire:model="insurances.{{ $index }}.vehicle_number">
+                                        @error('inception')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="mb-3">
+                                        <label for="inception" class="form-label">Inception</label> <span class="text-danger">*</span>
+                                        <input type="date" class="form-control" id="inception" aria-label="inception" required placeholder="Enter inception" wire:model="insurances.{{ $index }}.inception">
+                                        @error('inception')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="mb-3">
+                                        <label for="expiration" class="form-label">Expiration</label> <span class="text-danger">*</span>
+                                        <input type="date" class="form-control" id="expiration" aria-label="expiration" required placeholder="Enter expiration" wire:model="insurances.{{ $index }}.expiration">
+                                        @error('expiration')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="mb-3">
+                                        <br>
+                                        <button type="button" class="btn btn-danger" wire:click="removeInsurance({{ $index }})">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
 
                         <button class="btn btn-primary float-end" type="submit">Save
                             <span class="spinner-grow spinner-grow-sm" aria-hidden="true" wire:loading></span>

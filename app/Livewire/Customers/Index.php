@@ -15,7 +15,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->customers = Customer::with('insurance')
+        $this->customers = Customer::with('insurances')
             ->where('status', CustomerStatusEnum::ACTIVE->value)
             ->orderBy('name')
             ->get();

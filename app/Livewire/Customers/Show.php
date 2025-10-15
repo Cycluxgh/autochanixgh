@@ -17,7 +17,7 @@ class Show extends Component
 
     public function mount($customerId)
     {
-        $this->customer = Customer::with('insurance')
+        $this->customer = Customer::with('insurances')
             ->find($this->decrypt($customerId));
         $insurance = $this->customer->insurance;
         $this->insurance = $insurance;

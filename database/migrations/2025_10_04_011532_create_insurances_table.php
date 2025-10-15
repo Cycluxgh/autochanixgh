@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('insurances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->string('vehicle_number');
             $table->date('inception');
             $table->date('expiration');
             $table->softDeletes();

@@ -200,24 +200,22 @@
 </script>
 
 {{--<script>--}}
-{{--    const dvlaCustomers = document.querySelector('.driver-customers');--}}
-{{--    const dvlaChoices = new Choices(dvlaCustomers, {--}}
-{{--        placeholder: ['Select a customer'],--}}
+{{--    const vehicleNumbers = document.querySelector('.vehicle-numbers');--}}
+{{--    const vehicleChoices = new Choices(vehicleNumbers, {--}}
+{{--        placeholder: ['Select customer vehicle number'],--}}
 {{--    });--}}
 {{--</script>--}}
 
 <script>
     const messageCustomers = document.querySelector('.message-customers');
     const customersChoices = new Choices(messageCustomers, {
-        placeholder: ['Select a customer'],
+        placeholder: ['Select existing customer'],
     });
-
-    console.log(customersChoices.getValue(true))
 </script>
 
 <script>
     flatpickr("#manufacture-year", {
-        enableTime: true,
+        enableTime: false,
         dateFormat: "Y",
     });
 </script>
