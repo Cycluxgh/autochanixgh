@@ -100,7 +100,7 @@
                                 <a href="{{ route('companies.create') }}" class="tp-link">Add</a>
                             </li>
                             <li>
-                                <a href="icons-mdi.html" class="tp-link">List</a>
+                                <a href="{{ route('companies.index') }}" class="tp-link">List</a>
                             </li>
                         </ul>
                     </div>

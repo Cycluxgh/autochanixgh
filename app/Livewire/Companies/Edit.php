@@ -3,14 +3,13 @@
 namespace App\Livewire\Companies;
 
 use App\Models\Company;
-use App\Models\Insurance;
 use App\Util;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class Create extends Component
+class Edit extends Component
 {
     use Util, WithFileUploads;
 
@@ -18,11 +17,12 @@ class Create extends Component
     public $email;
     public $phone;
     public $ceo;
-    #[Validate('nullable|image|max:2048|mimes:jpeg,png,jpg,gif,svg,avif,webp')]
+    #[Validate('image|max:2048|mimes:jpeg,png,jpg,gif,svg,avif,webp')]
     public $logo;
     public $address;
     public $path;
 
+    public ?Company $company;
     public $insurances = [
         ['vehicle_number' => '', 'inception' => '', 'expiration' => '']
     ];
@@ -37,9 +37,30 @@ class Create extends Component
         'insurances.*.expiration.after' => 'Expiration must be after the inception date.',
     ];
 
+    public function mount(string $companyId)
+    {
+        $this->company = Company::firstWhere('id', $companyId);
+        $this->name = $this->company->name;
+        $this->email = $this->company->email;
+        $this->phone = $this->company->phone;
+        $this->ceo = $this->company->ceo;
+        $this->logo = $this->company->logo;
+        $this->address = $this->company->address;
+
+        $this->insurances = $this->company->insurances->map(function ($insurance) {
+            return [
+                'id' => $insurance->id,
+                'vehicle_number' => $insurance->vehicle_number,
+                'inception' => $insurance->inception,
+                'expiration' => $insurance->expiration,
+            ];
+        })->toArray();
+    }
+
     public function addInsurance()
     {
         $this->insurances[] = [
+            'id' => null,
             'vehicle_number' => '',
             'inception' => '',
             'expiration' => '',
@@ -52,7 +73,7 @@ class Create extends Component
         $this->insurances = array_values($this->insurances);
     }
 
-    public function save()
+    public function update()
     {
         $this->validate();
 
@@ -61,27 +82,30 @@ class Create extends Component
         }
 
         try {
+
             DB::transaction(function () {
-                $company = Company::create([
+                $this->company->update([
                     'name' => $this->name,
                     'email' => $this->email,
                     'phone' => $this->phone,
+                    'ceo' => $this->ceo,
                     'logo' => $this->path,
                     'address' => $this->address,
                 ]);
 
-                foreach ($this->insurances as $insurance) {
-                    Insurance::create([
-                        'company_id' => $company->id,
-                        'vehicle_number' => $insurance['vehicle_number'],
-                        'inception' => $insurance['inception'],
-                        'expiration' => $insurance['expiration'],
+                $upsertData = collect($this->insurances)->map(function ($insurance) {
+                    return array_merge($insurance, [
+                        'customer_id' => $this->company->id,
                     ]);
-                }
+                })->toArray();
+
+                $uniqueColumns = ['id'];
+                $updateColumns = ['vehicle_number', 'inception', 'expiration'];
+
+                Company::upsert($upsertData, $uniqueColumns, $updateColumns);
             });
 
-            $this->reset();
-            session()->flash('success', 'Company information saved successfully with vehicle insurances.');
+            session()->flash('success', 'Company information updated successfully with vehicle insurances.');
 
         } catch (\Exception $exception) {
             session()->flash('error', "Something went wrong: {$exception->getMessage()}");
@@ -105,6 +129,6 @@ class Create extends Component
 
     public function render()
     {
-        return view('livewire.companies.create');
+        return view('livewire.companies.edit');
     }
 }

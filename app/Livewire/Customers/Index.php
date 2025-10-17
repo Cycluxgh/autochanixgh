@@ -5,6 +5,7 @@ namespace App\Livewire\Customers;
 use App\CustomerStatusEnum;
 use App\Models\Customer;
 use App\Util;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class Index extends Component
@@ -23,7 +24,13 @@ class Index extends Component
 
     public function delete($customerId)
     {
-        Customer::firstWhere('id', $customerId)->delete();
+        $customer = Customer::firstWhere('id', $customerId);
+        if ($customer->image) {
+            $path = str_replace('storage/', '', $customer->image);
+            Storage::disk('public')->delete($path);
+        }
+
+        $customer->delete();
         session()->flash('success', 'Customer deleted successfully.');
     }
 

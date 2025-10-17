@@ -90,7 +90,6 @@ class DvlaForm extends Form
     public function store()
     {
         $form = $this->all();
-//        dd($form);
         $form['customer_id'] = $form['customer_id']['value'];
 //        $form['vehicle_number'] = $form['vehicle_number']['value'];
 

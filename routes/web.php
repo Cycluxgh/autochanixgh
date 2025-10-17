@@ -16,8 +16,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('customers/{customerId}/edit', Edit::class)->name('customers.edit');
     Route::get('customers/{customerId}/show', Show::class)->name('customers.show');
 
-    Route::get('companies/index', Index::class)->name('companies.index');
+    Route::get('companies/index', \App\Livewire\Companies\Index::class)->name('companies.index');
     Route::get('companies/create', \App\Livewire\Companies\Create::class)->name('companies.create');
+    Route::get('companies/{companyId}/edit', \App\Livewire\Companies\Edit::class)->name('companies.edit');
+    Route::get('companies/{companyId}/show', \App\Livewire\Companies\Show::class)->name('companies.show');
 
     Route::get('drivers/index', \App\Livewire\Drivers\Index::class)->name('drivers.index');
     Route::get('drivers/create', \App\Livewire\Drivers\Create::class)->name('drivers.create');

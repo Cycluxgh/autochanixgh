@@ -2,10 +2,13 @@
 
 namespace App\Livewire\Customers;
 
+use App\GenderEnum;
+use App\MaritalStatusEnum;
 use App\Models\Customer;
 use App\Models\Insurance;
 use App\Util;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -23,13 +26,26 @@ class Create extends Component
     public $marital_status;
     public $work_place;
     public $address;
-    #[Validate('image|max:2048|mimes:jpeg,png,jpg,gif,svg,avif,webp')]
+    #[Validate('nullable|image|max:2048|mimes:jpeg,png,jpg,gif,svg,avif,webp')]
     public $image;
     private $path;
 
     public $insurances = [
         ['vehicle_number' => '', 'inception' => '', 'expiration' => '']
     ];
+
+    protected $messages = [
+        'name' => 'Name is required',
+        'email' => 'Email should be unique',
+        'phone' => 'Phone is required and should be unique',
+        'gender.enum' => 'Invalid gender selection.',
+        'marital_status.enum' => 'Invalid marital status selection.',
+        'insurances.*.vehicle_number.required' => 'Vehicle number is required.',
+        'insurances.*.inception.required' => 'Inception date is required.',
+        'insurances.*.expiration.required' => 'Expiration date is required.',
+        'insurances.*.expiration.after' => 'Expiration must be after the inception date.',
+    ];
+
     public function addInsurance()
     {
         $this->insurances[] = [
@@ -47,6 +63,8 @@ class Create extends Component
 
     public function save()
     {
+        $this->validate();
+
         if ($this->image) {
             $this->path = $this->uploadSingleImage($this->image, 'images/customers');
         }
@@ -76,11 +94,27 @@ class Create extends Component
             });
 
             $this->reset();
-            session()->flash('success', 'Customer information saved successfully.');
+            session()->flash('success', 'Customer information saved successfully with vehicle insurances.');
         } catch (\Exception $e) {
             session()->flash('error', "Something went wrong: {$e->getMessage()}");
         }
+    }
 
+    protected function rules()
+    {
+        return [
+            'name' => 'required|string|max:1000',
+            'email' => 'nullable|string|email|max:1000|unique:customers',
+            'phone' => 'required|string|max:1000|unique:customers,phone',
+            'gender' => ['nullable', Rule::enum(GenderEnum::class)],
+            'marital_status' => ['nullable', Rule::enum(MaritalStatusEnum::class)],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'work_place' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'insurances.*.vehicle_number' => 'required|string|max:255|unique:insurances,vehicle_number',
+            'insurances.*.inception' => 'required|date|before_or_equal:today',
+            'insurances.*.expiration' => 'required|date|after:insurances.*.inception',
+        ];
     }
 
     public function render()

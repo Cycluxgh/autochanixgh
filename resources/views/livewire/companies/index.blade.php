@@ -1,5 +1,5 @@
-<x-slot:title>Customers</x-slot>
-<x-slot:page_title>Customers</x-slot>
+<x-slot:title>Companies</x-slot>
+<x-slot:page_title>Companies</x-slot>
 
 <!-- Button Datatable -->
 <div class="row">
@@ -15,54 +15,52 @@
                 <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap">
                     <thead>
                     <tr>
-                        <th>Image</th>
+                        <th>Logo</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone number</th>
-                        <th>Gender</th>
-                        <th>Marital Status</th>
-                        <th>Work Place</th>
+                        <th>CEO</th>
+                        <th>Address</th>
                         <th>Total Insured Vehicles</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($customers as $customer)
+                    @foreach($companies as $company)
                         <tr>
-                            <td><img src="{{asset($customer?->image ?? 'assets/images/logo-sm.png')}}" alt="" class="img-fluid rounded-circle avatar-sm"></td>
-                            <td>{{ ucfirst($customer->name) }}</td>
-                            <td>{{ $customer?->email ?? 'No Email' }}</td>
-                            <td>{{ $customer->phone }}</td>
-                            <td>{{ ucfirst($customer?->gender ?? 'No Gender') }}</td>
-                            <td>{{ ucfirst($customer?->marital_status) }}</td>
-                            <td>{{ ucfirst($customer?->work_place ?? 'No Work place') }}</td>
-                            <td>{{ count($customer->insurances) }}</td>
+                            <td><img src="{{asset($company?->logo ?? 'assets/images/logo-sm.png')}}" alt="" class="img-fluid rounded-circle avatar-sm"></td>
+                            <td>{{ ucfirst($company->name) }}</td>
+                            <td>{{ $company?->email ?? 'No Email' }}</td>
+                            <td>{{ $company->phone }}</td>
+                            <td>{{ ucfirst($company?->ceo ?? 'No CEO') }}</td>
+                            <td>{{ ucfirst($company?->address ?? 'No Address') }}</td>
+                            <td>{{ count($company->insurances) }}</td>
                             <td>
                                 <span>
-                                    <a href="{{ route('customers.show', ['customerId' => \App\Livewire\Customers\Index::encrypt($customer->id)]) }}"
+                                    <a href="{{ route('companies.show', ['companyId' => \App\Livewire\Companies\Index::encrypt($company->id)]) }}"
                                        type="button" class="btn btn-sm" data-bs-toggle="tooltip"
                                        data-bs-placement="top" data-bs-title="View">
                                         <i class="mdi mdi-eye-outline fs-16 align-middle text-info"
                                            style="cursor: pointer"></i>
                                     </a>
-                                    <a href="{{ route('customers.edit', ['customerId' => \App\Livewire\Customers\Index::encrypt($customer->id)]) }}"
+                                    <a href="{{ route('companies.edit', ['companyId' => \App\Livewire\Companies\Index::encrypt($company->id)]) }}"
                                        type="button" class="btn btn-sm" data-bs-toggle="tooltip"
-                                            data-bs-placement="top" data-bs-title="Edit">
+                                       data-bs-placement="top" data-bs-title="Edit">
                                         <i class="mdi mdi-pencil fs-16 align-middle text-primary"
                                            style="cursor: pointer"></i>
                                     </a>
                                     <button type="button" class="btn btn-sm" data-bs-toggle="tooltip"
                                             data-bs-placement="top" data-bs-title="Delete">
                                         <i class="mdi mdi-trash-can-outline fs-16 align-middle text-danger"
-                                           style="cursor: pointer" wire:click="delete({{ $customer->id }})"></i>
+                                           style="cursor: pointer" wire:click="delete({{ $company->id }})"></i>
                                     </button>
 {{--                                    <a type="button" class="btn btn-sm"--}}
-{{--                                       href="#"--}}
-{{--                                       data-bs-toggle="tooltip" data-bs-placement="top"--}}
-{{--                                       data-bs-title="Book appointment">--}}
-{{--                                        <i class="mdi mdi-calendar-outline fs-16 align-middle text-warning"--}}
-{{--                                           style="cursor: pointer"></i>--}}
-{{--                                    </a>--}}
+                                    {{--                                       href="#"--}}
+                                    {{--                                       data-bs-toggle="tooltip" data-bs-placement="top"--}}
+                                    {{--                                       data-bs-title="Book appointment">--}}
+                                    {{--                                        <i class="mdi mdi-calendar-outline fs-16 align-middle text-warning"--}}
+                                    {{--                                           style="cursor: pointer"></i>--}}
+                                    {{--                                    </a>--}}
                                 </span>
                             </td>
                         </tr>

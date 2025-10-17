@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('insurances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('customer_id')->references('id')->on('customers')
+                ->onDelete('cascade')
+                ->nullable();
+            $table->unsignedBigInteger('company_id')->references('id')->on('companies')
+                ->onDelete('cascade')
+                ->nullable();
             $table->string('vehicle_number');
             $table->date('inception');
             $table->date('expiration');
