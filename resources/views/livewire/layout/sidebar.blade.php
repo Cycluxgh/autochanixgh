@@ -205,7 +205,7 @@
                 </li>
 
                 <li>
-                    <a href="calendar.html" class="tp-link">
+                    <a href="{{ route('renewals.index') }}" class="tp-link">
                         <i data-feather="repeat"></i>
                         <span> Renewals </span>
                     </a>

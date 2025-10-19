@@ -3,6 +3,8 @@
 namespace App\Livewire\Drivers;
 
 use App\Livewire\Forms\DvlaForm;
+use App\Models\Company;
+use App\Models\Customer;
 use App\Models\Dvla;
 use App\Util;
 use Livewire\Component;
@@ -12,12 +14,14 @@ class Edit extends Component
     use Util;
 
     public ?DvlaForm $form;
-    public $customer;
+    public ?string $customer;
 
     public function mount(string $dvlaId)
     {
         $dvla = Dvla::firstWhere('id', $this->decrypt($dvlaId));
-        $this->customer = $dvla->customer->name;
+
+        $this->customer = $dvla?->customer?->name ?? $dvla?->company?->name ?? null;
+
         $this->form->setDvla($dvla);
     }
 

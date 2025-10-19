@@ -18,9 +18,7 @@ class Create extends Component
     use WithFileUploads, Util;
 
     public $name;
-    #[Validate("required|exists:customers,phone")]
     public $phone;
-    #[Validate("nullable|exists:customers,email")]
     public $email;
     public $gender;
     public $marital_status;
@@ -104,7 +102,7 @@ class Create extends Component
     {
         return [
             'name' => 'required|string|max:1000',
-            'email' => 'nullable|string|email|max:1000|unique:customers',
+            'email' => 'nullable|email|max:1000|unique:customers,email',
             'phone' => 'required|string|max:1000|unique:customers,phone',
             'gender' => ['nullable', Rule::enum(GenderEnum::class)],
             'marital_status' => ['nullable', Rule::enum(MaritalStatusEnum::class)],

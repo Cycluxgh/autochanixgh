@@ -18,7 +18,7 @@
                     <table id="responsive-datatable" class="table table-bordered table-bordered dt-responsive nowrap">
                         <thead>
                         <tr>
-                            <th>Customer</th>
+                            <th>Customer/Company</th>
                             <th>Contact</th>
                             <th>Vehicle Number</th>
                             <th>Vehicle Make</th>
@@ -33,8 +33,8 @@
                         <tbody>
                         @foreach($dvlas as $dvla)
                             <tr>
-                                <td>{{ $dvla->customer->name }}</td>
-                                <td>{{ $dvla->customer->phone }}</td>
+                                <td>{{ $dvla?->customer?->name ?? $dvla?->company?->name }}</td>
+                                <td>{{ $dvla?->customer?->phone ?? $dvla?->company?->phone }}</td>
                                 <td>{{ $dvla->vehicle_number }}</td>
                                 <td>{{ ucfirst($dvla->vehicle_make) }}</td>
                                 <td>{{ $dvla->chassis_number }}</td>
@@ -44,7 +44,7 @@
                                 <td>{{ \Carbon\Carbon::parse($dvla->entry_date)->toFormattedDayDateString() }}</td>
                                 <td>
                                     <span>
-                                    <a href="#"
+                                    <a href="{{ route('drivers.show', ['dvlaId' => \App\Livewire\Drivers\Show::encrypt($dvla->id)]) }}"
                                        type="button" class="btn btn-sm" data-bs-toggle="tooltip"
                                        data-bs-placement="top" data-bs-title="View">
                                         <i class="mdi mdi-eye-outline fs-16 align-middle text-info"

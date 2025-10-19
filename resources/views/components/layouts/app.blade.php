@@ -199,12 +199,12 @@
     });
 </script>
 
-{{--<script>--}}
-{{--    const vehicleNumbers = document.querySelector('.vehicle-numbers');--}}
-{{--    const vehicleChoices = new Choices(vehicleNumbers, {--}}
-{{--        placeholder: ['Select customer vehicle number'],--}}
-{{--    });--}}
-{{--</script>--}}
+<script>
+    const companies = document.querySelector('.existing-company');
+    const comapanyChoices = new Choices(companies, {
+        placeholder: ['Select existing company'],
+    });
+</script>
 
 <script>
     const messageCustomers = document.querySelector('.message-customers');

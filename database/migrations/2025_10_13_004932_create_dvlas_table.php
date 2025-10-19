@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('dvlas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
+            $table->unsignedBigInteger('customer_id')->references('id')
+                ->on('customers')
+                ->onDelete('cascade')
+                ->nullable();
+            $table->unsignedBigInteger('company_id')->references('id')
+                ->on('companies')
+                ->onDelete('cascade')
+                ->nullable();
             $table->string('vehicle_number');
             $table->string('vehicle_make')->nullable();
             $table->string('colour')->nullable();

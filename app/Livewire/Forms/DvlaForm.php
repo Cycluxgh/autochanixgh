@@ -3,12 +3,14 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Dvla;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class DvlaForm extends Form
 {
     public $customer_id;
+    public $company_id;
     public $vehicle_number;
     public $vehicle_make;
     public $colour;
@@ -44,10 +46,24 @@ class DvlaForm extends Form
 
     public function rules()
     {
+        $dvlaId = $this->ignore->dvlaId ?? $this->dvla->id ?? null;
+
         return [
-            'customer_id.value' => 'required|numeric|exists:customers,id',
-            'vehicle_number' => 'required|string|unique:dvlas,vehicle_number',
-            'vehicle_make' => 'required|string',
+            'vehicle_number' => ['required', 'string', 'max:255',
+                Rule::unique('dvlas', 'vehicle_number')->ignore($dvlaId),
+            ],
+            'vehicle_make' => 'nullable|string|max:255',
+            'length' => 'nullable|numeric|min:0',
+            'width' => 'nullable|numeric|min:0',
+            'height' => 'nullable|numeric|min:0',
+            'axles_number' => 'nullable|numeric|min:0',
+            'wheels_number' => 'nullable|numeric|min:0',
+            'nvw' => 'nullable|numeric|min:0',
+            'gvw' => 'nullable|numeric|min:0',
+            'load' => 'nullable|numeric|min:0',
+            'engine_number' => 'nullable|numeric|min:0',
+            'cylinders_number' => 'nullable|numeric|min:0',
+            'entry_date' => 'nullable|date:Y-m-d|before_or_equal:today',
         ];
     }
 
@@ -89,9 +105,11 @@ class DvlaForm extends Form
 
     public function store()
     {
+        $this->validate();
+
         $form = $this->all();
-        $form['customer_id'] = $form['customer_id']['value'];
-//        $form['vehicle_number'] = $form['vehicle_number']['value'];
+        $form['customer_id'] = $form['customer_id']['value'] ?? null;
+        $form['company_id'] = $form['company_id']['value'] ?? null;
 
         Dvla::create($form);
         $this->reset(
@@ -130,6 +148,7 @@ class DvlaForm extends Form
 
     public function update()
     {
-        $this->dvla->update($this->except('customer_id'));
+        $this->validate();
+        $this->dvla->update($this->except('customer_id', 'company_id'));
     }
 }
