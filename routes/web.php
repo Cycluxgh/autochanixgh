@@ -34,6 +34,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('messages/create', \App\Livewire\Messages\Create::class)->name('messages.create');
 
     Route::get('renewals/index', \App\Livewire\Renewals\Index::class)->name('renewals.index');
+
+    Route::get('libraries/index', \App\Livewire\Libraries\Index::class)->name('libraries.index');
 });
 
 require __DIR__.'/auth.php';

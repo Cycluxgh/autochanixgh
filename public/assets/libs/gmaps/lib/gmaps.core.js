@@ -161,7 +161,7 @@ var GMaps = (function(global) {
 
     if (!(typeof window.google === 'object' && window.google.maps)) {
       if (typeof window.console === 'object' && window.console.error) {
-        console.error('Google Maps API is required. Please register the following JavaScript library https://maps.googleapis.com/maps/api/js.');
+        console.error('Google Maps API is required. Please register the following JavaScript libraries https://maps.googleapis.com/maps/api/js.');
       }
 
       return function() {};

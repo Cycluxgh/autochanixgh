@@ -22,7 +22,7 @@ class Index extends Component
     {
         $company = Company::firstWhere('id', $companyId);
         if ($company->logo) {
-            $path = str_replace('storage/', '', $company->logo);
+            $path = $this->extractOriginalFilePath($company->logo);
             Storage::disk('public')->delete($path);
         }
 

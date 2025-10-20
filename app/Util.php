@@ -29,6 +29,15 @@ trait Util
         return implode('|', $paths);
     }
 
+    public static function extractOriginalFilePath(string $filePath): string
+    {
+        if (config('app.env') == 'local') {
+            return str_replace('storage/', '', $filePath);
+        } else {
+            return str_replace('storage/app/public/', '', $filePath);
+        }
+    }
+
     public static function encrypt(int | string $id): string
     {
         return Crypt::encryptString($id);

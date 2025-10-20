@@ -26,7 +26,7 @@ class Index extends Component
     {
         $customer = Customer::firstWhere('id', $customerId);
         if ($customer->image) {
-            $path = str_replace('storage/', '', $customer->image);
+            $path = $this->extractOriginalFilePath($customer->image);
             Storage::disk('public')->delete($path);
         }
 

@@ -212,7 +212,7 @@
                 </li>
 
                 <li>
-                    <a href="calendar.html" class="tp-link">
+                    <a href="{{ route('libraries.index') }}" class="tp-link">
                         <i data-feather="book-open"></i>
                         <span> Library </span>
                     </a>
