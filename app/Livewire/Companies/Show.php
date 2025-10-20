@@ -11,10 +11,13 @@ class Show extends Component
     use Util;
 
     public ?Company $company;
+    public $showRenewals = false;
+    public $renewals = [];
 
     public function mount($companyId)
     {
         $this->company = Company::firstWhere('id', $this->decrypt($companyId));
+        $this->renewals = $this->company->renewals;
     }
 
     public function render()

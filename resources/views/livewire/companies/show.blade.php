@@ -6,7 +6,10 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <h5>Profile</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5>Profile</h5>
+                    <button type="button" class="btn btn-primary btn-sm" x-on:click.prevent="$wire.showRenewals = true">View Renewals</button>
+                </div>
                 <hr>
                 <div class="col-8">
                     <div class="row mb-3">
@@ -74,6 +77,7 @@
             @endforeach
         </div>
     </div>
+    @include('livewire.customers.components.renewals-list')
     <div class="card">
         <div class="card-body">
             <div class="row">

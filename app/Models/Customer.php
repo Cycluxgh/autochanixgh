@@ -34,4 +34,9 @@ class Customer extends Model
     {
         return $this->hasMany(Insurance::class);
     }
+
+    public function renewals(): HasMany
+    {
+        return $this->hasMany(Renewal::class);
+    }
 }

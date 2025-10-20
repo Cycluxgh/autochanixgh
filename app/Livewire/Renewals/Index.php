@@ -43,10 +43,26 @@ class Index extends Component
     public $hideCustomersSelect = false;
     public $hideCompaniesSelect = false;
     public $showAddRenewalForm = false;
+    public $showEditRenewalForm = false;
     public $size = 4;
     public $path;
     public $vehicleNumbers = [];
     public $renewals = [];
+
+    // Edit Properties
+    public $customer_company;
+    public Renewal $renewal;
+    #[Validate('required', message: 'Please attach an image or PDF for renewal')]
+    #[Validate('file', message: 'Please upload a valid file.')]
+    #[Validate('mimes:jpg,jpeg,png,avif,webp,pdf', message: 'Only images or PDFs are allowed.')]
+    #[Validate('max:2048', message: 'File size must not exceed 2MB.')]
+    public $edit_document;
+
+    #[Validate('required|date|date_format:Y-m-d|before_or_equal:today')]
+    public $edit_inception;
+
+    #[Validate('required|date|date_format:Y-m-d|after:inception')]
+    public $edit_expiration;
 
     public function mount()
     {
@@ -82,8 +98,8 @@ class Index extends Component
         try {
             DB::transaction(function () {
                 if ($this->customer_id) {
-                    $insurance = Insurance::where('customer_id', $this->customer_id['value'])
-                        ->where('vehicle_number', $this->vehicleNumbers)
+                    $insurance = Insurance::where('customer_id', (int) $this->customer_id['value'])
+                        ->where('vehicle_number', $this->vehicle_number)
                         ->first();
                     if ($insurance) {
                         $insurance->update([
@@ -93,7 +109,7 @@ class Index extends Component
                     }
                 } elseif ($this->company_id) {
                     $insurance = Insurance::where('company_id', $this->company_id['value'])
-                        ->where('vehicle_number', $this->vehicleNumbers)
+                        ->where('vehicle_number', $this->vehicle_number)
                         ->first();
                     if ($insurance) {
                         $insurance->update([
@@ -114,6 +130,60 @@ class Index extends Component
             $this->showAddRenewalForm = true;
             $this->reset();
             session()->flash('success', 'Vehicle number renewal saved successfully.');
+
+            $this->redirectRoute('renewals.index');
+        } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
+        }
+    }
+
+    public function edit($renewalId)
+    {
+        $this->showEditRenewalForm = true;
+        $this->renewal = Renewal::firstWhere('id', $renewalId);
+        if ($this->renewal) {
+            $this->customer_company = $this->renewal->customer?->name ?? $this->renewal->company?->name;
+            $this->vehicle_number = $this->renewal->vehicle_number;
+        }
+    }
+
+    public function update()
+    {
+        try {
+            DB::transaction(function () {
+                $customer = $this->renewal->customer;
+                if ($customer) {
+                    $insurance = Insurance::where('customer_id', $customer->id)
+                        ->where('vehicle_number', $this->renewal->vehicle_number)
+                        ->first();
+                    if ($insurance) {
+                        $insurance->update([
+                            'inception' => $this->edit_inception,
+                            'expiration' => $this->edit_expiration,
+                        ]);
+                    }
+                }
+
+                $company = $this->renewal->company;
+                if ($company) {
+                    $insurance = Insurance::where('company_id', $company->id)
+                        ->where('vehicle_number', $this->renewal->vehicle_number)
+                        ->first();
+                    if ($insurance) {
+                        $insurance->update([
+                            'inception' => $this->edit_inception,
+                            'expiration' => $this->edit_expiration,
+                        ]);
+                    }
+                }
+
+                $this->renewal->update([
+                    'document' => $this->uploadSingleImage($this->edit_document, 'images/renewals'),
+                ]);
+            });
+
+            $this->reset();
+            session()->flash('success', 'Vehicle number renewal updated successfully.');
 
             $this->redirectRoute('renewals.index');
         } catch (\Exception $e) {

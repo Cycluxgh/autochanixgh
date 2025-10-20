@@ -5,7 +5,10 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <h5>Profile</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5>Profile</h5>
+                    <button type="button" class="btn btn-primary btn-sm" x-on:click.prevent="$wire.showRenewals = true">View Renewals</button>
+                </div>
                 <hr>
                 <div class="col-8">
                     <div class="row mb-3">
@@ -42,7 +45,8 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <img src="{{asset($customer?->image ?? 'assets/images/logo-dark.png')}}" class="img-fluid rounded" alt="Thumbnails" data-holder-rendered="true" width="200">
+                    <img src="{{asset($customer?->image ?? 'assets/images/logo-dark.png')}}" class="img-fluid rounded"
+                         alt="Thumbnails" data-holder-rendered="true" width="200">
                 </div>
 
             </div>
@@ -78,6 +82,7 @@
             @endforeach
         </div>
     </div>
+    @include('livewire.customers.components.renewals-list')
     <div class="card">
         <div class="card-body">
             <div class="row">
