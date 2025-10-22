@@ -17,7 +17,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                    <form class="novalidated" wire:submit.prevent="save">
+                    <form class="novalidated" wire:submit.prevent="update">
                         <div class="row">
                             <div class="col-4">
                                 <div class="mb-3">
@@ -46,7 +46,8 @@
                             <div class="col-4">
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Phone number</label> <span class="text-danger">*</span>
-                                    <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" maxlength="10" aria-label="phone number" placeholder="Enter phone number" required wire:model="phone">
+                                    <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" maxlength="10" aria-label="phone number"
+                                           placeholder="Enter phone number" required wire:model="phone">
                                     @error('phone')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -144,7 +145,7 @@
                             </div>
                         @endforeach
 
-                        <button class="btn btn-primary float-end" type="submit">Submit
+                        <button class="btn btn-primary float-end" type="submit">Save
                             <span class="spinner-grow spinner-grow-sm" aria-hidden="true" wire:loading></span>
                         </button>
                     </form>

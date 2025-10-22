@@ -41,7 +41,7 @@
 
                 </div>
                 <div class="col-4">
-                    <img src="{{asset($company?->logo ?? 'assets/images/logo-dark.png')}}" class="img-fluid rounded" alt="Thumbnails" data-holder-rendered="true" width="200">
+                    <img src="{{asset($company?->logo ?? 'assets/images/logo-dark.png')}}" class="img-fluid rounded" alt="logo" data-holder-rendered="true" width="200">
                 </div>
 
             </div>

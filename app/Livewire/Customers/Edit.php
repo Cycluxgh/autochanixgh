@@ -91,7 +91,7 @@ class Edit extends Component
 
     public function update()
     {
-        $this->validate();
+//        $this->validate();
 
         if ($this->image) {
             $this->path = $this->uploadSingleImage($this->image, 'images/customers');
@@ -133,10 +133,12 @@ class Edit extends Component
 
     protected function rules()
     {
+        $customerId = $this->ignore->customerId ?? $this->customer->id ?? null;
+
         return [
             'name' => 'required|string|max:1000',
-            'email' => 'nullable|string|email|max:1000|unique:customers',
-            'phone' => 'required|string|max:1000|unique:customers,phone',
+            'email' => ['nullable', 'email', Rule::unique('customers', 'email')->ignore($customerId)],
+            'phone' => ['required', 'string', Rule::unique('customers', 'phone')->ignore($customerId)],
             'gender' => ['nullable', Rule::enum(GenderEnum::class)],
             'marital_status' => ['nullable', Rule::enum(MaritalStatusEnum::class)],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',

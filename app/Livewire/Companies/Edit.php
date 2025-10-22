@@ -3,8 +3,10 @@
 namespace App\Livewire\Companies;
 
 use App\Models\Company;
+use App\Models\Insurance;
 use App\Util;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -17,7 +19,7 @@ class Edit extends Component
     public $email;
     public $phone;
     public $ceo;
-    #[Validate('image|max:2048|mimes:jpeg,png,jpg,gif,svg,avif,webp')]
+    #[Validate('nullable|image|mimes:jpeg,png,jpg,gif,svg,avif,webp,ico|max:2048', message: 'Only image files are allowed')]
     public $logo;
     public $address;
     public $path;
@@ -30,7 +32,7 @@ class Edit extends Component
     protected $messages = [
         'name' => 'Name is required',
         'email' => 'Email should be unique',
-        'phone' => 'Phone is required',
+        'phone' => 'Phone is required and should be unique',
         'insurances.*.vehicle_number.required' => 'Vehicle number is required.',
         'insurances.*.inception.required' => 'Inception date is required.',
         'insurances.*.expiration.required' => 'Expiration date is required.',
@@ -39,15 +41,14 @@ class Edit extends Component
 
     public function mount(string $companyId)
     {
-        $this->company = Company::firstWhere('id', $companyId);
-        $this->name = $this->company->name;
-        $this->email = $this->company->email;
-        $this->phone = $this->company->phone;
-        $this->ceo = $this->company->ceo;
-        $this->logo = $this->company->logo;
-        $this->address = $this->company->address;
+        $this->company = Company::firstWhere('id', $this->decrypt($companyId));
+        $this->name = $this->company?->name;
+        $this->email = $this->company?->email;
+        $this->phone = $this->company?->phone;
+        $this->ceo = $this->company?->ceo;
+        $this->address = $this->company?->address;
 
-        $this->insurances = $this->company->insurances->map(function ($insurance) {
+        $this->insurances = $this->company?->insurances->map(function ($insurance) {
             return [
                 'id' => $insurance->id,
                 'vehicle_number' => $insurance->vehicle_number,
@@ -75,7 +76,7 @@ class Edit extends Component
 
     public function update()
     {
-        $this->validate();
+//        $this->validate();
 
         if ($this->logo) {
             $this->path = $this->uploadSingleImage($this->logo, 'images/companies/logos');
@@ -89,20 +90,20 @@ class Edit extends Component
                     'email' => $this->email,
                     'phone' => $this->phone,
                     'ceo' => $this->ceo,
-                    'logo' => $this->path,
+                    'logo' => $this->path ?: $this->company->logo,
                     'address' => $this->address,
                 ]);
 
                 $upsertData = collect($this->insurances)->map(function ($insurance) {
                     return array_merge($insurance, [
-                        'customer_id' => $this->company->id,
+                        'company_id' => $this->company->id,
                     ]);
                 })->toArray();
 
                 $uniqueColumns = ['id'];
                 $updateColumns = ['vehicle_number', 'inception', 'expiration'];
 
-                Company::upsert($upsertData, $uniqueColumns, $updateColumns);
+                Insurance::upsert($upsertData, $uniqueColumns, $updateColumns);
             });
 
             session()->flash('success', 'Company information updated successfully with vehicle insurances.');
@@ -114,14 +115,15 @@ class Edit extends Component
 
     protected function rules()
     {
+        $companyId = $this->ignore->companyId ?? $this->company->id ?? null;
+
         return [
             'name' => 'required|string|max:1000',
-            'email' => 'nullable|string|email|max:1000|unique:companies',
-            'phone' => 'required|string|max:1000|unique:companies,phone',
+            'email' => ['nullable', 'email', Rule::unique('companies', 'email')->ignore($companyId)],
+            'phone' => ['required', 'max:10', Rule::unique('companies', 'phone')->ignore($companyId)],
             'ceo' => 'nullable|string|max:1000',
             'address' => 'nullable|string|max:2000',
-            'logo' => 'nullable|mimes:jpeg,png,jpg,gif,svg,avif,webp,ico,webp|max:2048',
-            'insurances.*.vehicle_number' => 'required|string|max:255|unique:insurances,vehicle_number',
+            'insurances.*.vehicle_number' => ['required', 'string', Rule::unique('insurances', 'vehicle_number')->ignore($companyId)],
             'insurances.*.inception' => 'required|date|before_or_equal:today',
             'insurances.*.expiration' => 'required|date|after:insurances.*.inception',
         ];
