@@ -100,7 +100,7 @@ class Edit extends Component
             'phone' => ['required', 'string', Rule::unique('customers', 'phone')->ignore($customerId)],
             'gender' => ['nullable', Rule::enum(GenderEnum::class)],
             'marital_status' => ['nullable', Rule::enum(MaritalStatusEnum::class)],
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,avif|max:2048',
             'work_place' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
             'insurances.*.inception' => 'required|date|before_or_equal:today',

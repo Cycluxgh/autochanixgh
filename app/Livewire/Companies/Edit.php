@@ -85,7 +85,7 @@ class Edit extends Component
             'name' => 'required|string|max:1000',
             'email' => ['nullable', 'email', Rule::unique('companies', 'email')->ignore($companyId)],
             'phone' => ['required', 'string', Rule::unique('companies', 'phone')->ignore($companyId)],
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,ico|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,ico,avif|max:2048',
             'ceo' => 'nullable|string|max:1000',
             'address' => 'nullable|string|max:255',
             'insurances.*.inception' => 'required|date|before_or_equal:today',

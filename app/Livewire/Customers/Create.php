@@ -107,7 +107,7 @@ class Create extends Component
             'phone' => 'required|string|max:1000|unique:customers,phone',
             'gender' => ['nullable', Rule::enum(GenderEnum::class)],
             'marital_status' => ['nullable', Rule::enum(MaritalStatusEnum::class)],
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,avif|max:2048',
             'work_place' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
             'insurances.*.vehicle_number' => 'required|string|max:255|unique:insurances,vehicle_number',
