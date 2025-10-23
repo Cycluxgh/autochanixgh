@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Companies;
 
+use App\GenderEnum;
+use App\MaritalStatusEnum;
 use App\Models\Company;
 use App\Models\Insurance;
 use App\Util;
@@ -35,6 +37,7 @@ class Edit extends Component
         'email' => 'Email should be unique',
         'phone' => 'Phone is required and should be unique',
         'insurances.*.vehicle_number.required' => 'Vehicle number is required.',
+        'insurances.*.vehicle_number.unique' => 'Vehicle number already exists.',
         'insurances.*.inception.required' => 'Inception date is required.',
         'insurances.*.expiration.required' => 'Expiration date is required.',
         'insurances.*.expiration.after' => 'Expiration must be after the inception date.',
@@ -77,7 +80,31 @@ class Edit extends Component
 
     public function update()
     {
-        $this->validate();
+        $companyId = $this->ignore->companyId ?? $this->company->id ?? null;
+        $rules = [
+            'name' => 'required|string|max:1000',
+            'email' => ['nullable', 'email', Rule::unique('companies', 'email')->ignore($companyId)],
+            'phone' => ['required', 'string', Rule::unique('companies', 'phone')->ignore($companyId)],
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,ico|max:2048',
+            'ceo' => 'nullable|string|max:1000',
+            'address' => 'nullable|string|max:255',
+            'insurances.*.inception' => 'required|date|before_or_equal:today',
+            'insurances.*.expiration' => 'required|date|after:insurances.*.inception',
+        ];
+
+        foreach ($this->insurances as $index => $insurance) {
+            $rules["insurances.$index.vehicle_number"] = [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('insurances', 'vehicle_number')->ignore($insurance['id']),
+            ];
+
+            $rules["insurances.$index.inception"] = ['required', 'date'];
+            $rules["insurances.$index.expiration"] = ['required', 'date', 'after:insurances.' . $index . '.inception'];
+        }
+
+        $this->validate($rules);
 
         if ($this->logo) {
             $this->path = $this->uploadSingleImage($this->logo, 'images/companies/logos');
@@ -132,12 +159,18 @@ class Edit extends Component
             ],
             'phone' => [
                 'required',
+                'string',
                 'max:10',
                 Rule::unique('companies', 'phone')->ignore($companyId),
             ],
             'ceo' => 'nullable|string|max:1000',
             'address' => 'nullable|string|max:2000',
-//            'insurances.*.vehicle_number' => ['required', 'string', Rule::unique('insurances', 'vehicle_number')->ignore($companyId)],
+            'insurances.*.vehicle_number' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('insurances', 'vehicle_number'),
+            ],
             'insurances.*.inception' => 'required|date|before_or_equal:today',
             'insurances.*.expiration' => 'required|date|after:insurances.*.inception',
         ];

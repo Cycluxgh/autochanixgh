@@ -48,6 +48,7 @@ class Edit extends Component
         'gender.enum' => 'Invalid gender selection.',
         'marital_status.enum' => 'Invalid marital status selection.',
         'insurances.*.vehicle_number.required' => 'Vehicle number is required.',
+        'insurances.*.vehicle_number.unique' => 'Vehicle number already exists.',
         'insurances.*.inception.required' => 'Inception date is required.',
         'insurances.*.expiration.required' => 'Expiration date is required.',
         'insurances.*.expiration.after' => 'Expiration must be after the inception date.',
@@ -92,7 +93,33 @@ class Edit extends Component
 
     public function update()
     {
-        $this->validate();
+        $customerId = $this->customerId ?? $this->customer->id ?? null;
+        $rules = [
+            'name' => 'required|string|max:1000',
+            'email' => ['nullable', 'email', Rule::unique('customers', 'email')->ignore($customerId)],
+            'phone' => ['required', 'string', Rule::unique('customers', 'phone')->ignore($customerId)],
+            'gender' => ['nullable', Rule::enum(GenderEnum::class)],
+            'marital_status' => ['nullable', Rule::enum(MaritalStatusEnum::class)],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'work_place' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'insurances.*.inception' => 'required|date|before_or_equal:today',
+            'insurances.*.expiration' => 'required|date|after:insurances.*.inception',
+        ];
+
+        foreach ($this->insurances as $index => $insurance) {
+            $rules["insurances.$index.vehicle_number"] = [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('insurances', 'vehicle_number')->ignore($insurance['id']),
+            ];
+
+            $rules["insurances.$index.inception"] = ['required', 'date'];
+            $rules["insurances.$index.expiration"] = ['required', 'date', 'after:insurances.' . $index . '.inception'];
+        }
+
+        $this->validate($rules);
 
         if ($this->image) {
             $this->path = $this->uploadSingleImage($this->image, 'images/customers');
@@ -145,12 +172,12 @@ class Edit extends Component
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'work_place' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
-//            'insurances.*.vehicle_number' => [
-//                'required',
-//                'string',
-//                'max:255',
-//                Rule::unique('insurances', 'vehicle_number')->ignore($customerId),
-//            ],
+            'insurances.*.vehicle_number' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('insurances', 'vehicle_number'),
+            ],
             'insurances.*.inception' => 'required|date|before_or_equal:today',
             'insurances.*.expiration' => 'required|date|after:insurances.*.inception',
         ];

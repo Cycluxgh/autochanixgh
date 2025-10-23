@@ -143,8 +143,8 @@
                                 <div class="col-3">
                                     <div class="mb-3">
                                         <label for="vehicle-number" class="form-label">Vehicle Number</label> <span class="text-danger">*</span>
-                                        <input type="text" class="form-control" id="vehicle-number" aria-label="vehicle number" required placeholder="Enter vehicle number" wire:model="insurances.{{ $index }}.vehicle_number">
-                                        @error('inception')
+                                        <input type="text" class="form-control @error('insurances.' . $index . '.vehicle_number') is-invalid @enderror" id="vehicle-number" aria-label="vehicle number" required placeholder="Enter vehicle number" wire:model="insurances.{{ $index }}.vehicle_number">
+                                        @error('insurances.' . $index . '.vehicle_number')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
@@ -154,8 +154,8 @@
                                 <div class="col-3">
                                     <div class="mb-3">
                                         <label for="inception" class="form-label">Inception</label> <span class="text-danger">*</span>
-                                        <input type="date" class="form-control" id="inception" aria-label="inception" required placeholder="Enter inception" wire:model="insurances.{{ $index }}.inception">
-                                        @error('inception')
+                                        <input type="date" class="form-control @error('insurances.' . $index . '.inception') is-invalid @enderror" id="inception" aria-label="inception" required placeholder="Enter inception" wire:model="insurances.{{ $index }}.inception">
+                                        @error('insurances.' . $index . '.inception')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
@@ -165,8 +165,8 @@
                                 <div class="col-3">
                                     <div class="mb-3">
                                         <label for="expiration" class="form-label">Expiration</label> <span class="text-danger">*</span>
-                                        <input type="date" class="form-control" id="expiration" aria-label="expiration" required placeholder="Enter expiration" wire:model="insurances.{{ $index }}.expiration">
-                                        @error('expiration')
+                                        <input type="date" class="form-control @error('insurances.' . $index . '.expiration') is-invalid @enderror" id="expiration" aria-label="expiration" required placeholder="Enter expiration" wire:model="insurances.{{ $index }}.expiration">
+                                        @error('insurances.' . $index . '.expiration')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>

@@ -39,6 +39,7 @@ class Create extends Component
         'gender.enum' => 'Invalid gender selection.',
         'marital_status.enum' => 'Invalid marital status selection.',
         'insurances.*.vehicle_number.required' => 'Vehicle number is required.',
+        'insurances.*.vehicle_number.unique' => 'Vehicle number already exists.',
         'insurances.*.inception.required' => 'Inception date is required.',
         'insurances.*.expiration.required' => 'Expiration date is required.',
         'insurances.*.expiration.after' => 'Expiration must be after the inception date.',

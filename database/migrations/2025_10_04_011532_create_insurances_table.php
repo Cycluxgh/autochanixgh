@@ -21,7 +21,7 @@ return new class extends Migration
                 ->on('companies')
                 ->onDelete('cascade')
                 ->nullable();
-            $table->string('vehicle_number');
+            $table->string('vehicle_number')->unique();
             $table->date('inception');
             $table->date('expiration');
             $table->softDeletes();
