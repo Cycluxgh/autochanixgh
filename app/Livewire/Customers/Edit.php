@@ -25,6 +25,7 @@ class Edit extends Component
     public $marital_status;
     public $work_place;
     public $address;
+
     #[Validate('nullable|image|max:2048|mimes:jpeg,png,jpg,gif,svg,avif,webp')]
     public $image;
     private $path;
@@ -91,7 +92,7 @@ class Edit extends Component
 
     public function update()
     {
-//        $this->validate();
+        $this->validate();
 
         if ($this->image) {
             $this->path = $this->uploadSingleImage($this->image, 'images/customers');
@@ -133,7 +134,7 @@ class Edit extends Component
 
     protected function rules()
     {
-        $customerId = $this->ignore->customerId ?? $this->customer->id ?? null;
+        $customerId = $this->customerId ?? $this->customer->id ?? null;
 
         return [
             'name' => 'required|string|max:1000',
@@ -144,7 +145,12 @@ class Edit extends Component
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'work_place' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
-            'insurances.*.vehicle_number' => 'required|string|max:255|unique:insurances,vehicle_number',
+//            'insurances.*.vehicle_number' => [
+//                'required',
+//                'string',
+//                'max:255',
+//                Rule::unique('insurances', 'vehicle_number')->ignore($customerId),
+//            ],
             'insurances.*.inception' => 'required|date|before_or_equal:today',
             'insurances.*.expiration' => 'required|date|after:insurances.*.inception',
         ];

@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Insurance;
 use App\Util;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -28,7 +29,7 @@ class Create extends Component
     ];
 
     protected $messages = [
-        'name' => 'Name is required',
+        'name' => 'Name is required and should be unique.',
         'email' => 'Email should be unique',
         'phone' => 'Phone is required',
         'insurances.*.vehicle_number.required' => 'Vehicle number is required.',
@@ -91,7 +92,12 @@ class Create extends Component
     protected function rules()
     {
         return [
-            'name' => 'required|string|max:1000',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('companies', 'name'),
+            ],
             'email' => 'nullable|string|email|max:1000|unique:companies',
             'phone' => 'required|string|max:1000|unique:companies,phone',
             'ceo' => 'nullable|string|max:1000',

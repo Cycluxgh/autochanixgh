@@ -16,6 +16,7 @@ class Renewal extends Model
         'company_id',
         'vehicle_number',
         'document',
+        'policy_number',
     ];
 
     public function customer(): BelongsTo

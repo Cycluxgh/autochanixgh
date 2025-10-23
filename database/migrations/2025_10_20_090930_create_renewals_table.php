@@ -22,7 +22,8 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->nullable();
             $table->string('vehicle_number');
-            $table->string('document');
+            $table->string('document')->nullable();
+            $table->string('policy_number')->unique();
             $table->softDeletes();
             $table->timestamps();
         });

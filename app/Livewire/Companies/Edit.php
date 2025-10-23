@@ -19,7 +19,8 @@ class Edit extends Component
     public $email;
     public $phone;
     public $ceo;
-    #[Validate('nullable|image|mimes:jpeg,png,jpg,gif,svg,avif,webp,ico|max:2048', message: 'Only image files are allowed')]
+    #[Validate('nullable|image|mimes:jpeg,png,jpg,gif,svg,avif,webp,ico|max:2048',
+        message: 'Only image files are allowed')]
     public $logo;
     public $address;
     public $path;
@@ -76,7 +77,7 @@ class Edit extends Component
 
     public function update()
     {
-//        $this->validate();
+        $this->validate();
 
         if ($this->logo) {
             $this->path = $this->uploadSingleImage($this->logo, 'images/companies/logos');
@@ -118,12 +119,25 @@ class Edit extends Component
         $companyId = $this->ignore->companyId ?? $this->company->id ?? null;
 
         return [
-            'name' => 'required|string|max:1000',
-            'email' => ['nullable', 'email', Rule::unique('companies', 'email')->ignore($companyId)],
-            'phone' => ['required', 'max:10', Rule::unique('companies', 'phone')->ignore($companyId)],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('companies', 'name')->ignore($companyId),
+            ],
+            'email' => [
+                'nullable',
+                'email',
+                Rule::unique('companies', 'email')->ignore($companyId),
+            ],
+            'phone' => [
+                'required',
+                'max:10',
+                Rule::unique('companies', 'phone')->ignore($companyId),
+            ],
             'ceo' => 'nullable|string|max:1000',
             'address' => 'nullable|string|max:2000',
-            'insurances.*.vehicle_number' => ['required', 'string', Rule::unique('insurances', 'vehicle_number')->ignore($companyId)],
+//            'insurances.*.vehicle_number' => ['required', 'string', Rule::unique('insurances', 'vehicle_number')->ignore($companyId)],
             'insurances.*.inception' => 'required|date|before_or_equal:today',
             'insurances.*.expiration' => 'required|date|after:insurances.*.inception',
         ];

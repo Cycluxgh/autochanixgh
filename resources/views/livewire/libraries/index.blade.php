@@ -6,7 +6,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Responsive Example Datatable</h5>
+                    <h5 class="card-title mb-0">List</h5>
                 </div><!-- end card header -->
 
                 <div class="card-body">
