@@ -8,35 +8,13 @@ use App\Models\Customer;
 use App\Models\Insurance;
 use App\Models\Renewal;
 use App\Util;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class Index extends Component
 {
     use Util, WithFileUploads;
-
-//    public $customer_id = ['value' => null];
-//    public $company_id = ['value' => null];
-//
-//    #[Validate('required|exists:insurances,vehicle_number')]
-//    public $vehicle_number;
-//    #[Validate('required|string|unique:renewals,policy_number')]
-//    public $policy_number;
-//
-//    #[Validate('nullable', message: 'Please attach an image or PDF for renewal')]
-//    #[Validate('file', message: 'Please upload a valid file.')]
-//    #[Validate('mimes:jpg,jpeg,png,avif,webp,pdf', message: 'Only images or PDFs are allowed.')]
-//    #[Validate('max:2048', message: 'File size must not exceed 2MB.')]
-//    public $document;
-//
-//    #[Validate('required|date|date_format:Y-m-d|before_or_equal:today')]
-//    public $inception;
-//
-//    #[Validate('required|date|date_format:Y-m-d|after:inception')]
-//    public $expiration;
 
     public $customers;
     public $companies;
@@ -48,20 +26,6 @@ class Index extends Component
     public $vehicleNumbers = [];
     public $renewals = [];
     public RenewalForm $form;
-
-    // Edit Properties
-
-//    #[Validate('nullable', message: 'Please attach an image or PDF for renewal')]
-//    #[Validate('file', message: 'Please upload a valid file.')]
-//    #[Validate('mimes:jpg,jpeg,png,avif,webp,pdf', message: 'Only images or PDFs are allowed.')]
-//    #[Validate('max:2048', message: 'File size must not exceed 2MB.')]
-    public $edit_document;
-//    #[Validate('required|date|date_format:Y-m-d|before_or_equal:today')]
-    public $edit_inception;
-//    #[Validate('required|date|date_format:Y-m-d|after:inception')]
-    public $edit_expiration;
-//    #[Validate('required|string|unique:renewals,policy_number')]
-    public $edit_policy_number;
 
     public function mount()
     {
@@ -106,7 +70,7 @@ class Index extends Component
     {
         $this->showAddRenewalForm = false;
         $this->showEditRenewalForm = true;
-//        $this->renewal = Renewal::firstWhere('id', $renewalId);
+
         $this->form->setRenewal($renewalId);
     }
 

@@ -16,6 +16,7 @@ class Insurance extends Model
         'vehicle_number',
         'inception',
         'expiration',
+        'renewal_id',
     ];
 
     public function customer(): BelongsTo
@@ -26,5 +27,10 @@ class Insurance extends Model
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function renewal(): BelongsTo
+    {
+        return $this->belongsTo(Renewal::class);
     }
 }

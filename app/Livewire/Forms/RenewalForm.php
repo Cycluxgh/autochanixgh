@@ -70,6 +70,14 @@ class RenewalForm extends Form
 
         try {
             DB::transaction(function () {
+                $renewal = Renewal::create([
+                    'customer_id' => $this->customer_id ? $this->customer_id['value'] : null,
+                    'company_id' => $this->company_id ? $this->company_id['value'] : null,
+                    'vehicle_number' => $this->vehicle_number,
+                    'policy_number' => $this->policy_number,
+                    'document' => $this->path,
+                ]);
+
                 if ($this->customer_id) {
                     $insurance = Insurance::where('customer_id', (int) $this->customer_id['value'])
                         ->where('vehicle_number', $this->vehicle_number)
@@ -78,6 +86,7 @@ class RenewalForm extends Form
                         $insurance->update([
                             'inception' => $this->inception,
                             'expiration' => $this->expiration,
+                            'renewal_id' => $renewal->id,
                         ]);
                     }
                 } elseif ($this->company_id) {
@@ -88,17 +97,10 @@ class RenewalForm extends Form
                         $insurance->update([
                             'inception' => $this->inception,
                             'expiration' => $this->expiration,
+                            'renewal_id' => $renewal->id,
                         ]);
                     }
                 }
-
-                Renewal::create([
-                    'customer_id' => $this->customer_id ? $this->customer_id['value'] : null,
-                    'company_id' => $this->company_id ? $this->company_id['value'] : null,
-                    'vehicle_number' => $this->vehicle_number,
-                    'policy_number' => $this->policy_number,
-                    'document' => $this->path,
-                ]);
             });
 
         } catch (\Exception $e) {

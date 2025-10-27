@@ -21,6 +21,10 @@ return new class extends Migration
                 ->on('companies')
                 ->onDelete('cascade')
                 ->nullable();
+            $table->unsignedBigInteger('renewal_id')->references('id')
+                ->on('renewals')
+                ->onDelete('cascade')
+                ->nullable();
             $table->string('vehicle_number')->unique();
             $table->date('inception');
             $table->date('expiration');
