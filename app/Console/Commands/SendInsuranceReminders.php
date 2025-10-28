@@ -16,14 +16,14 @@ class SendInsuranceReminders extends Command
      *
      * @var string
      */
-    protected $signature = 'insurance:remind';
+    protected $signature = 'email:insurance-reminders';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Send insurance renewal reminders to customers nearing expiration';
+    protected $description = 'Send insurance renewal reminders to customers nearing expiration via email';
 
     /**
      * Execute the console command.

@@ -8,8 +8,9 @@
                     <form wire:submit="save">
                         <div class="mb-3">
                             <label for="example-select" class="form-label">Select a customer</label>
-                            <select class="form-select message-customers" data-placeholder="Select a customer" wire:model="customerContacts" multiple>
-                                @foreach($customers as $customer)
+                            <select class="form-select message-customers" data-placeholder="Select a customer"
+                                wire:model="customerContacts" multiple>
+                                @foreach ($customers as $customer)
                                     <option value="{{ $customer->phone }}">{{ ucfirst($customer->name) }}</option>
                                 @endforeach
                             </select>

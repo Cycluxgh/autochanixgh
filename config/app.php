@@ -123,4 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'mnotify_base_url' => env('MNOTIFY_BASE_URL', 'https://api.mnotify.com'),
+    'mnotify_key' => env('MNOTIFY_API_KEY', ''),
+
 ];

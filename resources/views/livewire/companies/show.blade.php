@@ -1,4 +1,3 @@
-
 <x-slot:title>Company</x-slot>
 <x-slot:page_title>Company Profile</x-slot>
 
@@ -8,7 +7,8 @@
             <div class="row">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5>Profile</h5>
-                    <button type="button" class="btn btn-primary btn-sm" x-on:click.prevent="$wire.showRenewals = true">View Renewals</button>
+                    <button type="button" class="btn btn-primary btn-sm"
+                        x-on:click.prevent="$wire.showRenewals = true">View Renewals</button>
                 </div>
                 <hr>
                 <div class="col-8">
@@ -41,14 +41,15 @@
 
                 </div>
                 <div class="col-4">
-                    <img src="{{asset($company?->logo ?? 'assets/images/logo-dark.png')}}" class="img-fluid rounded" alt="logo" data-holder-rendered="true" width="200">
+                    <img src="{{ asset($company?->logo ?? 'assets/images/logo-dark.png') }}" class="img-fluid rounded"
+                        alt="logo" data-holder-rendered="true" width="200">
                 </div>
 
             </div>
             <br>
             <h5>Automobile Insurances</h5>
             <hr>
-            @foreach($company->insurances as $insurance)
+            @foreach ($company->insurances as $insurance)
                 @php
                     $isExpired = \Carbon\Carbon::parse($insurance->expiration) <= \Carbon\Carbon::now();
                 @endphp
@@ -56,22 +57,24 @@
                     <div class="col-3">
                         <label class="form-label">
                             Vehicle Number:
-                        </label>&nbsp;&nbsp;<strong>{{ $insurance?->vehicle_number}}</strong>
+                        </label>&nbsp;&nbsp;<strong>{{ $insurance?->vehicle_number }}</strong>
                     </div>
                     <div class="col-3">
                         <label class="form-label">
                             Insurance Inception:
-                        </label>&nbsp;&nbsp;<strong>{{ \Carbon\Carbon::parse($insurance?->inception)->toFormattedDayDateString()}}</strong>
+                        </label>&nbsp;&nbsp;<strong>{{ \Carbon\Carbon::parse($insurance?->inception)->toFormattedDayDateString() }}</strong>
                     </div>
                     <div class="col-3">
                         <label class="form-label">
                             Insurance Expiration:
-                        </label>&nbsp;&nbsp;<strong class="{{ $isExpired ? 'text-danger' : 'text-success' }}">{{ \Carbon\Carbon::parse($insurance?->expiration)->toFormattedDayDateString() }}</strong>
+                        </label>&nbsp;&nbsp;<strong
+                            class="{{ $isExpired ? 'text-danger' : 'text-success' }}">{{ \Carbon\Carbon::parse($insurance?->expiration)->toFormattedDayDateString() }}</strong>
                     </div>
                     <div class="col-3">
                         <label class="form-label">
                             Insurance Status:
-                        </label>&nbsp;&nbsp;<strong class="{{ $isExpired ? 'text-danger' : 'text-success' }}">{{ $isExpired ? 'Expired' : 'Active' }}</strong>
+                        </label>&nbsp;&nbsp;<strong
+                            class="{{ $isExpired ? 'text-danger' : 'text-success' }}">{{ $isExpired ? 'Expired' : 'Active' }}</strong>
                     </div>
                 </div>
             @endforeach

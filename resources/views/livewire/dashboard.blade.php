@@ -13,11 +13,14 @@
                             </div>
 
                             <div class="d-flex align-items-baseline mb-2">
-                                <div class="fs-22 mb-0 me-2 fw-semibold text-black">{{ $dashboardStats['customers']['total'] }}</div>
+                                <div class="fs-22 mb-0 me-2 fw-semibold text-black">
+                                    {{ $dashboardStats['customers']['total'] }}</div>
                                 <div class="me-auto">
-                                    <span class="text-{{ $dashboardStats['customers']['trend'] === \App\TrendEnum::Upwards->value ? 'success' : 'danger' }} d-inline-flex align-items-center">
+                                    <span
+                                        class="text-{{ $dashboardStats['customers']['trend'] === \App\TrendEnum::Upwards->value ? 'success' : 'danger' }} d-inline-flex align-items-center">
                                         {{ $dashboardStats['customers']['percent'] }}%
-                                        <i data-feather="{{ $dashboardStats['customers']['trend'] === \App\TrendEnum::Upwards->value ? 'trending-up' : 'trending-down' }}" class="ms-1" style="height: 22px; width: 22px;"></i>
+                                        <i data-feather="{{ $dashboardStats['customers']['trend'] === \App\TrendEnum::Upwards->value ? 'trending-up' : 'trending-down' }}"
+                                            class="ms-1" style="height: 22px; width: 22px;"></i>
                                     </span>
                                 </div>
                             </div>
@@ -34,11 +37,14 @@
                             </div>
 
                             <div class="d-flex align-items-baseline mb-2">
-                                <div class="fs-22 mb-0 me-2 fw-semibold text-black">{{ $dashboardStats['companies']['total'] }}</div>
+                                <div class="fs-22 mb-0 me-2 fw-semibold text-black">
+                                    {{ $dashboardStats['companies']['total'] }}</div>
                                 <div class="me-auto">
-                                    <span class="text-{{ $dashboardStats['companies']['trend'] === \App\TrendEnum::Upwards->value ? 'success' : 'danger' }} d-inline-flex align-items-center">
+                                    <span
+                                        class="text-{{ $dashboardStats['companies']['trend'] === \App\TrendEnum::Upwards->value ? 'success' : 'danger' }} d-inline-flex align-items-center">
                                         {{ $dashboardStats['companies']['percent'] }}%
-                                        <i data-feather="{{ $dashboardStats['companies']['trend'] === \App\TrendEnum::Upwards->value ? 'trending-up' : 'trending-down' }}" class="ms-1" style="height: 22px; width: 22px;"></i>
+                                        <i data-feather="{{ $dashboardStats['companies']['trend'] === \App\TrendEnum::Upwards->value ? 'trending-up' : 'trending-down' }}"
+                                            class="ms-1" style="height: 22px; width: 22px;"></i>
                                     </span>
                                 </div>
                             </div>
@@ -55,11 +61,14 @@
                             </div>
 
                             <div class="d-flex align-items-baseline mb-2">
-                                <div class="fs-22 mb-0 me-2 fw-semibold text-black">{{ $dashboardStats['insurances']['total'] }}</div>
+                                <div class="fs-22 mb-0 me-2 fw-semibold text-black">
+                                    {{ $dashboardStats['insurances']['total'] }}</div>
                                 <div class="me-auto">
-                                    <span class="text-{{ $dashboardStats['insurances']['trend'] === \App\TrendEnum::Upwards->value ? 'success' : 'danger' }} d-inline-flex align-items-center">
+                                    <span
+                                        class="text-{{ $dashboardStats['insurances']['trend'] === \App\TrendEnum::Upwards->value ? 'success' : 'danger' }} d-inline-flex align-items-center">
                                         {{ $dashboardStats['insurances']['percent'] }}%
-                                        <i data-feather="{{ $dashboardStats['insurances']['trend'] === \App\TrendEnum::Upwards->value ? 'trending-up' : 'trending-down' }}" class="ms-1" style="height: 22px; width: 22px;"></i>
+                                        <i data-feather="{{ $dashboardStats['insurances']['trend'] === \App\TrendEnum::Upwards->value ? 'trending-up' : 'trending-down' }}"
+                                            class="ms-1" style="height: 22px; width: 22px;"></i>
                                     </span>
                                 </div>
                             </div>
@@ -76,11 +85,14 @@
                             </div>
 
                             <div class="d-flex align-items-baseline mb-2">
-                                <div class="fs-22 mb-0 me-2 fw-semibold text-black">{{ $dashboardStats['renewals']['total']}}</div>
+                                <div class="fs-22 mb-0 me-2 fw-semibold text-black">
+                                    {{ $dashboardStats['renewals']['total'] }}</div>
                                 <div class="me-auto">
-                                    <span class="text-{{ $dashboardStats['renewals']['trend'] === \App\TrendEnum::Upwards->value ? 'success' : 'danger' }} d-inline-flex align-items-center">
+                                    <span
+                                        class="text-{{ $dashboardStats['renewals']['trend'] === \App\TrendEnum::Upwards->value ? 'success' : 'danger' }} d-inline-flex align-items-center">
                                         {{ $dashboardStats['renewals']['percent'] }}%
-                                        <i data-feather="{{ $dashboardStats['renewals']['trend'] === \App\TrendEnum::Upwards->value ? 'trending-up' : 'trending-down' }}" class="ms-1" style="height: 22px; width: 22px;"></i>
+                                        <i data-feather="{{ $dashboardStats['renewals']['trend'] === \App\TrendEnum::Upwards->value ? 'trending-up' : 'trending-down' }}"
+                                            class="ms-1" style="height: 22px; width: 22px;"></i>
                                     </span>
                                 </div>
                             </div>
@@ -129,72 +141,84 @@
                     <div class="table-responsive">
                         <table class="table table-traffic mb-0">
                             <tbody>
-                            <thead>
-                            <tr>
-                                <th>Sector</th>
-                                <th colspan="2">Progress</th>
-                            </tr>
-                            </thead>
+                                <thead>
+                                    <tr>
+                                        <th>Sector</th>
+                                        <th colspan="2">Progress</th>
+                                    </tr>
+                                </thead>
 
-                            <tr>
-                                <td>Customers</td>
-                                <td>{{ $dashboardStats['customers']['total'] }}</td>
-                                <td class="w-50">
-                                    <div class="progress progress-md mt-0">
-                                        <div class="progress-bar bg-dark" style="width: {{ $dashboardStats['customers']['total_percent'] }}%"></div>
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>Customers</td>
+                                    <td>{{ $dashboardStats['customers']['total'] }}</td>
+                                    <td class="w-50">
+                                        <div class="progress progress-md mt-0">
+                                            <div class="progress-bar bg-dark"
+                                                style="width: {{ $dashboardStats['customers']['total_percent'] }}%">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td>Companies</td>
-                                <td>{{ $dashboardStats['companies']['total'] }}</td>
-                                <td class="w-50">
-                                    <div class="progress progress-md mt-0">
-                                        <div class="progress-bar bg-info" style="width: {{ $dashboardStats['companies']['total_percent'] }}%"></div>
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>Companies</td>
+                                    <td>{{ $dashboardStats['companies']['total'] }}</td>
+                                    <td class="w-50">
+                                        <div class="progress progress-md mt-0">
+                                            <div class="progress-bar bg-info"
+                                                style="width: {{ $dashboardStats['companies']['total_percent'] }}%">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td>Insurances</td>
-                                <td>{{ $dashboardStats['insurances']['total'] }}</td>
-                                <td class="w-50">
-                                    <div class="progress progress-md mt-0">
-                                        <div class="progress-bar bg-primary" style="width: {{ $dashboardStats['insurances']['total_percent'] }}%"></div>
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>Insurances</td>
+                                    <td>{{ $dashboardStats['insurances']['total'] }}</td>
+                                    <td class="w-50">
+                                        <div class="progress progress-md mt-0">
+                                            <div class="progress-bar bg-primary"
+                                                style="width: {{ $dashboardStats['insurances']['total_percent'] }}%">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td>Diagnosis</td>
-                                <td>{{ $dashboardStats['diagnoses']['total'] }}</td>
-                                <td class="w-50">
-                                    <div class="progress progress-md mt-0">
-                                        <div class="progress-bar bg-secondary" style="width: {{ $dashboardStats['diagnoses']['total_percent'] }}%"></div>
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>Diagnosis</td>
+                                    <td>{{ $dashboardStats['diagnoses']['total'] }}</td>
+                                    <td class="w-50">
+                                        <div class="progress progress-md mt-0">
+                                            <div class="progress-bar bg-secondary"
+                                                style="width: {{ $dashboardStats['diagnoses']['total_percent'] }}%">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td>Expirations</td>
-                                <td>{{ $dashboardStats['expirations']['total'] }}</td>
-                                <td class="w-50">
-                                    <div class="progress progress-md mt-0">
-                                        <div class="progress-bar bg-danger" style="width: {{ $dashboardStats['expirations']['total_percent'] }}%"></div>
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>Expirations</td>
+                                    <td>{{ $dashboardStats['expirations']['total'] }}</td>
+                                    <td class="w-50">
+                                        <div class="progress progress-md mt-0">
+                                            <div class="progress-bar bg-danger"
+                                                style="width: {{ $dashboardStats['expirations']['total_percent'] }}%">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td>Renewals</td>
-                                <td>{{ $dashboardStats['renewals']['total'] }}</td>
-                                <td class="w-50">
-                                    <div class="progress progress-md mt-0">
-                                        <div class="progress-bar bg-success" style="width: {{ $dashboardStats['renewals']['total_percent'] }}%"></div>
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>Renewals</td>
+                                    <td>{{ $dashboardStats['renewals']['total'] }}</td>
+                                    <td class="w-50">
+                                        <div class="progress progress-md mt-0">
+                                            <div class="progress-bar bg-success"
+                                                style="width: {{ $dashboardStats['renewals']['total_percent'] }}%">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
                             </tbody>
                         </table>

@@ -27,8 +27,15 @@ Artisan::command('mail:raw-test', function () {
 });
 
 //Schedule::call(new InsuranceReminder())->everyMinute();
-//Schedule::command('insurance:remind')->everyMinute();
+Schedule::command('sms:insurance-reminders')->everyMinute();
 
-Schedule::command('insurance:remind')
+Schedule::command('email:insurance-reminders')
     ->daily()
     ->withoutOverlapping();
+
+Schedule::command('sms:insurance-reminders')
+    ->dailyAt('08:00') // run every day at 8 AM
+    ->withoutOverlapping()
+    ->onOneServer()
+    ->runInBackground()
+    ->sendOutputTo(storage_path('logs/insurance_reminders.log'));
