@@ -12,6 +12,7 @@ class Show extends Component
     use Util;
 
     public $showRenewals = false;
+    public $message;
     public Customer $customer;
     public ?Insurance $insurance;
     public $renewals = [];
@@ -24,6 +25,18 @@ class Show extends Component
         $this->insurance = $insurance;
 
         $this->renewals = $this->customer->renewals;
+    }
+
+    public function sendMessage()
+    {
+        try {
+            $success = $this->sendSMSMessage($this->customer->phone, $this->message);
+            if ($success) {
+                session()->flash('success', 'Message sent successfully');
+            }
+        } catch (\Exception $exception) {
+            session()->flash('error', $exception->getMessage());
+        }
     }
 
     public function render()

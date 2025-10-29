@@ -91,9 +91,21 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <form>
+                    <form wire:submit="sendMessage">
+                        @if (session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
                         <label class="form-label">Compose Message</label>
-                        <textarea rows="10" class="form-control mb-3"></textarea>
+                        <textarea rows="10" class="form-control mb-3" wire:model="message"></textarea>
                         <button type="submit" class="btn btn-primary btn-md float-end">
                             Send <i data-feather="send"></i>
                             <span class="spinner-grow spinner-grow-sm" aria-hidden="true" wire:loading></span>

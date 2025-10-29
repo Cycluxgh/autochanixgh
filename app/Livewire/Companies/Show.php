@@ -11,6 +11,7 @@ class Show extends Component
     use Util;
 
     public ?Company $company;
+    public $message;
     public $showRenewals = false;
     public $renewals = [];
 
@@ -18,6 +19,18 @@ class Show extends Component
     {
         $this->company = Company::firstWhere('id', $this->decrypt($companyId));
         $this->renewals = $this->company->renewals;
+    }
+
+    public function sendMessage()
+    {
+        try {
+            $success = $this->sendSMSMessage($this->company->phone, $this->message);
+            if ($success) {
+                session()->flash('success', 'Message sent successfully');
+            }
+        } catch (\Exception $exception) {
+            session()->flash('error', $exception->getMessage());
+        }
     }
 
     public function render()

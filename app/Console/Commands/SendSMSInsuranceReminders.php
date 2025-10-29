@@ -62,8 +62,9 @@ class SendSMSInsuranceReminders extends Command
             $message = str_replace(':date', now()->addDays($daysAhead)->format('M d, Y'), $messageTemplate);
 
             try {
-                $response = Http::asForm()->post(config('app.mnotify_base_url') . '/api/sms/quick', [
+                $response = Http::withQueryParameters([
                     'key' => config('app.mnotify_key'),
+                ])->post(config('app.mnotify_base_url') . '/api/sms/quick', [
                     'recipient' => $recipients,
                     'sender' => 'Tailorinhub',
                     'message' => $message,

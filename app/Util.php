@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Http;
 
 trait Util
 {
@@ -79,5 +80,22 @@ trait Util
         }
 
         return $n_format . $suffix;
+    }
+
+    public static function sendSMSMessage(string $phone, string $message): bool
+    {
+        try {
+            $response = Http::withQueryParameters([
+                'key' => config('app.mnotify_key'),
+            ])->post(config('app.mnotify_base_url') . '/api/sms/quick', [
+                'recipient' => [$phone],
+                'sender' => 'Tailorinhub',
+                'message' => $message,
+            ]);
+
+            return $response->ok();
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 }

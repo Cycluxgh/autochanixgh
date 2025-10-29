@@ -119,7 +119,7 @@
                 </div>
 
                 <div class="card-body">
-                    <div id="monthly-sales" class="apex-charts"></div>
+                    <div id="chart" class="apex-charts"></div>
                 </div>
 
             </div>
@@ -251,3 +251,43 @@
         </div>
     </div>
 </div>
+
+<x-slot:statistics>
+    <script>
+        var options = {
+            series: [{
+                name: 'Statistics',
+                type: 'column',
+                data: [
+                    {{ $dashboardStats['customers']['total'] }},
+                    {{ $dashboardStats['companies']['total'] }},
+                    {{ $dashboardStats['insurances']['total'] }},
+                    {{ $dashboardStats['renewals']['total'] }},
+                    {{ $dashboardStats['diagnoses']['total'] }},
+                    {{ $dashboardStats['expirations']['total'] }},
+                ]
+            },],
+            chart: {
+                height: 350,
+                type: 'line',
+            },
+            stroke: {
+                width: [0, 4]
+            },
+            dataLabels: {
+                enabled: true,
+                enabledOnSeries: [1]
+            },
+            labels: ['Customers', 'Companies', 'Insurances', 'Renewals', 'Diagnoses', 'Expirations'],
+            yaxis: [{
+                title: {
+                    text: 'Statistics',
+                },
+
+            },]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
+</x-slot:statistics>

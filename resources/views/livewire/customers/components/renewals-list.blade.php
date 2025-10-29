@@ -12,6 +12,7 @@
                 <thead>
                     <tr>
                         <th>Vehicle Number</th>
+                        <th>Policy Number</th>
                         <th>Renewal Document</th>
                     </tr>
                 </thead>
@@ -19,9 +20,14 @@
                     @foreach ($renewals as $renewal)
                         <tr>
                             <td>{{ $renewal->vehicle_number }}</td>
+                            <td>{{ $renewal->policy_number }}</td>
                             <td>
-                                <a href="{{ asset($renewal->document) }}" class="text-primary" target="_blank">Document
-                                    Link</a>
+                                @if ($renewal->document)
+                                    <a href="{{ asset($renewal->document) }}" class="text-primary" target="_blank">Document
+                                        Link</a>
+                                @else
+                                    <span class="text-danger">No Document Attached</span>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

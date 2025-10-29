@@ -19,8 +19,12 @@
                         </div>
                     @endif
                     <div class="mb-3">
-                        <label class="form-label">Customer: &nbsp;</label>
-                        <strong>{{ $_diagnosis->customer->name }}</strong>
+                        <label class="form-label">Customer/Company: &nbsp;</label>
+                        <strong>{{ $_diagnosis?->customer?->name ?? $_diagnosis?->company?->name }}</strong>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Vehicle Number: &nbsp;</label>
+                        <strong>{{ $_diagnosis?->vehicle_number }}</strong>
                     </div>
 
                     <div class="mb-3">

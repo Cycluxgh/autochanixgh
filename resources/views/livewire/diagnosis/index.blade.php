@@ -20,6 +20,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Contact</th>
+                                <th>Vehicle Number</th>
                                 <th>Diagnosis</th>
                                 <th>Action</th>
                             </tr>
@@ -27,8 +28,9 @@
                         <tbody>
                             @foreach ($diagnoses as $diagnosis)
                                 <tr>
-                                    <td>{{ $diagnosis->customer->name }}</td>
-                                    <td>{{ $diagnosis->customer->phone }}</td>
+                                    <td>{{ $diagnosis?->customer?->name ?? $diagnosis?->company?->name }}</td>
+                                    <td>{{ $diagnosis?->customer?->phone ?? $diagnosis?->company?->phone }}</td>
+                                    <td>{{ $diagnosis->vehicle_number }}</td>
                                     <td>{{ $diagnosis->diagnosis }}</td>
                                     <td>
                                         <span>

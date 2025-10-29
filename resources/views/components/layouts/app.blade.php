@@ -111,9 +111,6 @@
     <!-- Flatpickr Timepicker Plugin js -->
     <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
 
-    <!-- for basic area chart -->
-    <script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
-
     <!-- Datatables js -->
     <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
 
@@ -226,6 +223,10 @@
             dateFormat: "Y",
         });
     </script>
+
+    @isset($statistics)
+        {{ $statistics }}
+    @endisset
 
 </body>
 

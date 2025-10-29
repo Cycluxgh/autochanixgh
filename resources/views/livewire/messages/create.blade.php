@@ -7,11 +7,21 @@
                 <div class="row">
                     <form wire:submit="save">
                         <div class="mb-3">
-                            <label for="example-select" class="form-label">Select a customer</label>
+                            <label for="example-select" class="form-label">Select existing customer</label>
                             <select class="form-select message-customers" data-placeholder="Select a customer"
                                 wire:model="customerContacts" multiple>
                                 @foreach ($customers as $customer)
                                     <option value="{{ $customer->phone }}">{{ ucfirst($customer->name) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="example-select" class="form-label">Select existing company</label>
+                            <select class="form-select existing-company" data-placeholder="Select a company"
+                                    wire:model="companyContacts" multiple>
+                                @foreach ($companies as $company)
+                                    <option value="{{ $company->phone }}">{{ ucfirst($company->name) }}</option>
                                 @endforeach
                             </select>
                         </div>

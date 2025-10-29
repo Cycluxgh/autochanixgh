@@ -40,8 +40,12 @@
                                     <td>{{ ucfirst($renewal?->customer?->phone ?? $renewal?->company?->phone) }}</td>
                                     <td>{{ $renewal?->vehicle_number }}</td>
                                     <td>
-                                        <a href="{{ asset($renewal->document) }}" target="_blank"
-                                            class="text-primary">Document link</a>
+                                        @if ($renewal->document)
+                                            <a href="{{ asset($renewal->document) }}" target="_blank"
+                                               class="text-primary">Document link</a>
+                                        @else
+                                            No File Attached
+                                        @endif
                                     </td>
                                     <td>{{ \Carbon\Carbon::parse($renewal->created_at)->toFormattedDayDateString() }}
                                     </td>
