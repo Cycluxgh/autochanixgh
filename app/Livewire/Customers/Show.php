@@ -34,6 +34,8 @@ class Show extends Component
             if ($success) {
                 session()->flash('success', 'Message sent successfully');
             }
+
+            $this->reset('message');
         } catch (\Exception $exception) {
             session()->flash('error', $exception->getMessage());
         }

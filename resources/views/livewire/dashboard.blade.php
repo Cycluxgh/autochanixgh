@@ -252,7 +252,7 @@
     </div>
 </div>
 
-<x-slot:statistics>
+<x-slot:scripts>
     <script>
         var options = {
             series: [{
@@ -290,4 +290,4 @@
         var chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
     </script>
-</x-slot:statistics>
+</x-slot:scripts>

@@ -82,13 +82,13 @@ trait Util
         return $n_format . $suffix;
     }
 
-    public static function sendSMSMessage(string $phone, string $message): bool
+    public static function sendSMSMessage(string|array $phone, string $message): bool
     {
         try {
             $response = Http::withQueryParameters([
                 'key' => config('app.mnotify_key'),
             ])->post(config('app.mnotify_base_url') . '/api/sms/quick', [
-                'recipient' => [$phone],
+                'recipient' => is_array($phone) ? $phone : [$phone],
                 'sender' => 'Tailorinhub',
                 'message' => $message,
             ]);

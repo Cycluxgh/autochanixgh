@@ -5,6 +5,7 @@ namespace App\Livewire\Messages;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Util;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Create extends Component
@@ -15,7 +16,8 @@ class Create extends Component
     public $companies;
     public $customerContacts;
     public $companyContacts;
-    public $diagnosis;
+    #[Validate('required|string')]
+    public $message;
 
     public function mount()
     {
@@ -25,7 +27,33 @@ class Create extends Component
 
     public function save()
     {
-        dd($this->customerContacts, $this->companyContacts);
+        $this->validate();
+
+        $contacts = [];
+        if ($this->customerContacts) {
+            foreach ($this->customerContacts as $contact) {
+                $contacts[] = $contact;
+            }
+        }
+
+        if ($this->companyContacts) {
+            foreach ($this->companyContacts as $contact) {
+                $contacts[] = $contact;
+            }
+        }
+
+        if (!empty($contacts)) {
+            try {
+                $success = $this->sendSMSMessage($contacts, $this->message);
+                if ($success) {
+                    session()->flash('success', 'Message sent successfully');
+                }
+
+                $this->reset('message');
+            } catch (\Exception $exception) {
+                session()->flash('error', $exception->getMessage());
+            }
+        }
     }
 
     public function render()
