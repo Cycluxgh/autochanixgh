@@ -43,6 +43,7 @@
                             <span class="d-none d-sm-block">Change Password</span>
                         </a>
                     </li>
+                    @if ($user->role->name === \App\RoleEnum::SuperAdmin->value)
                     <li class="nav-item">
                         <a class="nav-link p-2" id="portfolio_role_tab" data-bs-toggle="tab" href="#profile_role"
                             role="tab">
@@ -50,6 +51,7 @@
                             <span class="d-none d-sm-block">Change Role</span>
                         </a>
                     </li>
+                    @endif
                     {{--                        <li class="nav-item"> --}}
                     {{--                            <a class="nav-link p-2" id="setting_tab" data-bs-toggle="tab" href="#profile_setting" role="tab"> --}}
                     {{--                                <span class="d-block d-sm-none"><i class="mdi mdi-school"></i></span> --}}
@@ -226,7 +228,7 @@
 
                         </div>
                     </div> <!-- end Experience -->
-
+                    @if ($user->role->name === \App\RoleEnum::SuperAdmin->value)
                     <div class="tab-pane pt-4" id="profile_role" role="tabpanel">
                         <div class="card-body mb-0">
                             @if (session('role-success'))
@@ -255,6 +257,7 @@
                                     <div class="form-group mb-3 col-6">
                                         <label class="form-label">Select Role</label>
                                         <select class="form-select" id="role" name="role" wire:model="role">
+                                            <option>Choose...</option>
                                             @foreach (\App\RoleEnum::cases() as $role)
                                                 <option value="{{ $role->value }}">{{ ucfirst($role->value) }}
                                                 </option>
@@ -273,7 +276,7 @@
                             </form>
                         </div>
                     </div> <!-- end education -->
-
+                    @endif
                     {{--                        <div class="tab-pane pt-4" id="profile_setting" role="tabpanel"> --}}
                     {{--                            <div class="row"> --}}
 

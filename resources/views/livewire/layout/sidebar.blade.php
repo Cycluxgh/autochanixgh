@@ -7,7 +7,7 @@
             <div class="logo-box">
                 <a href="/" class="logo logo-light" wire:navigate>
                     <span class="logo-sm">
-                        <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
+                        <img src="{{ asset('assets/images/logo-dark.png') }}" alt="" height="22">
                     </span>
                     <span class="logo-lg">
                         <img src="{{ asset('assets/images/logo-light.png') }}" alt="" height="100"
@@ -16,7 +16,7 @@
                 </a>
                 <a href="/" class="logo logo-dark" wire:navigate>
                     <span class="logo-sm">
-                        <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
+                        <img src="{{ asset('assets/images/logo-light.png') }}" alt="" height="22">
                     </span>
                     <span class="logo-lg">
                         <img src="{{ asset('assets/images/logo-dark.png') }}" alt="" height="150"
@@ -213,12 +213,12 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ route('libraries.index') }}" class="tp-link">
-                        <i data-feather="book-open"></i>
-                        <span> Library </span>
-                    </a>
-                </li>
+{{--                <li>--}}
+{{--                    <a href="{{ route('libraries.index') }}" class="tp-link">--}}
+{{--                        <i data-feather="book-open"></i>--}}
+{{--                        <span> Library </span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
 
                 {{--                <li class="menu-title mt-2">General</li> --}}
 
