@@ -2,13 +2,17 @@
 
 namespace App\Livewire\Customers;
 
+use App\GenderEnum;
+use App\MaritalStatusEnum;
 use App\Models\Customer;
 use App\Models\Insurance;
 use App\Util;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use function PHPSTORM_META\map;
 
 class Edit extends Component
 {
@@ -21,19 +25,36 @@ class Edit extends Component
     public $marital_status;
     public $work_place;
     public $address;
-    #[Validate('image|max:2048|mimes:jpeg,png,jpg,gif,svg,avif,webp')]
+
+    #[Validate('nullable|image|max:2048|mimes:jpeg,png,jpg,gif,svg,avif,webp')]
     public $image;
     private $path;
 
-    #[Validate('required|date:Y-m-d')]
-    public $inception;
-    #[Validate('required|date:Y-m-d')]
-    public $expiration;
+    public $insurances = [
+        [
+            'id' => '',
+            'vehicle_number' => '',
+            'inception' => '',
+            'expiration' => '',
+        ]
+    ];
 
     public Customer $customer;
-    public string $customerId;
 
-    public function mount($customerId)
+    protected $messages = [
+        'name' => 'Name is required',
+        'email' => 'Email should be unique',
+        'phone' => 'Phone is required',
+        'gender.enum' => 'Invalid gender selection.',
+        'marital_status.enum' => 'Invalid marital status selection.',
+        'insurances.*.vehicle_number.required' => 'Vehicle number is required.',
+        'insurances.*.vehicle_number.unique' => 'Vehicle number already exists.',
+        'insurances.*.inception.required' => 'Inception date is required.',
+        'insurances.*.expiration.required' => 'Expiration date is required.',
+        'insurances.*.expiration.after' => 'Expiration must be after the inception date.',
+    ];
+
+    public function mount(string $customerId)
     {
         $this->customer = Customer::find($this->decrypt($customerId));
         $this->name = $this->customer->name;
@@ -44,13 +65,62 @@ class Edit extends Component
         $this->work_place = $this->customer->work_place;
         $this->address = $this->customer->address;
 
-        $insurance = $this->customer->insurance;
-        $this->inception = $insurance?->inception;
-        $this->expiration = $insurance?->expiration;
+        $this->insurances = $this->customer->insurances->map(function ($insurance) {
+            return [
+                    'id' => $insurance->id,
+                    'vehicle_number' => $insurance->vehicle_number,
+                    'inception' => $insurance->inception,
+                    'expiration' => $insurance->expiration,
+            ];
+        })->toArray();
+    }
+
+    public function addInsurance()
+    {
+        $this->insurances[] = [
+            'id' => null,
+            'vehicle_number' => '',
+            'inception' => '',
+            'expiration' => '',
+        ];
+    }
+
+    public function removeInsurance($index)
+    {
+        unset($this->insurances[$index]);
+        $this->insurances = array_values($this->insurances);
     }
 
     public function update()
     {
+        $customerId = $this->customerId ?? $this->customer->id ?? null;
+        $rules = [
+            'name' => 'required|string|max:1000',
+            'email' => ['nullable', 'email', Rule::unique('customers', 'email')->ignore($customerId)],
+            'phone' => ['required', 'string', Rule::unique('customers', 'phone')->ignore($customerId)],
+            'gender' => ['nullable', Rule::enum(GenderEnum::class)],
+            'marital_status' => ['nullable', Rule::enum(MaritalStatusEnum::class)],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,avif|max:2048',
+            'work_place' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'insurances.*.inception' => 'required|date|before_or_equal:today',
+            'insurances.*.expiration' => 'required|date|after:insurances.*.inception',
+        ];
+
+        foreach ($this->insurances as $index => $insurance) {
+            $rules["insurances.$index.vehicle_number"] = [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('insurances', 'vehicle_number')->ignore($insurance['id']),
+            ];
+
+            $rules["insurances.$index.inception"] = ['required', 'date'];
+            $rules["insurances.$index.expiration"] = ['required', 'date', 'after:insurances.' . $index . '.inception'];
+        }
+
+        $this->validate($rules);
+
         if ($this->image) {
             $this->path = $this->uploadSingleImage($this->image, 'images/customers');
         }
@@ -69,10 +139,17 @@ class Edit extends Component
                     'image' => $this->path ?: $this->customer->image,
                 ]);
 
-                $this->customer->insurance()->update([
-                    'inception' => $this->inception,
-                    'expiration' => $this->expiration,
-                ]);
+                $upsertData = collect($this->insurances)->map(function ($insurance) {
+                    return array_merge($insurance, [
+                        'customer_id' => $this->customer->id,
+                    ]);
+                })->toArray();
+
+                $uniqueColumns = ['id'];
+                $updateColumns = ['vehicle_number', 'inception', 'expiration'];
+
+                Insurance::upsert($upsertData, $uniqueColumns, $updateColumns);
+
             });
 
             session()->flash('success', 'Customer information updated successfully.');
@@ -80,6 +157,30 @@ class Edit extends Component
             session()->flash('error', "Something went wrong: {$e->getMessage()}");
         }
 
+    }
+
+    protected function rules()
+    {
+        $customerId = $this->customerId ?? $this->customer->id ?? null;
+
+        return [
+            'name' => 'required|string|max:1000',
+            'email' => ['nullable', 'email', Rule::unique('customers', 'email')->ignore($customerId)],
+            'phone' => ['required', 'string', Rule::unique('customers', 'phone')->ignore($customerId)],
+            'gender' => ['nullable', Rule::enum(GenderEnum::class)],
+            'marital_status' => ['nullable', Rule::enum(MaritalStatusEnum::class)],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'work_place' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'insurances.*.vehicle_number' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('insurances', 'vehicle_number'),
+            ],
+            'insurances.*.inception' => 'required|date|before_or_equal:today',
+            'insurances.*.expiration' => 'required|date|after:insurances.*.inception',
+        ];
     }
 
     public function render()

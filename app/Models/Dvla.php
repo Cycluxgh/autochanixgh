@@ -14,6 +14,7 @@ class Dvla extends Model
 
     protected $fillable = [
         'customer_id',
+        'company_id',
         'vehicle_number',
         'vehicle_make',
         'colour',
@@ -50,5 +51,10 @@ class Dvla extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 }

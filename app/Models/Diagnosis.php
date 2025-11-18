@@ -13,11 +13,18 @@ class Diagnosis extends Model
 
     protected $fillable = [
         'customer_id',
+        'company_id',
+        'vehicle_number',
         'diagnosis',
     ];
 
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 }

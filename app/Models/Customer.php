@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class Customer extends Model
 {
@@ -30,8 +31,13 @@ class Customer extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function insurance(): HasOne
+    public function insuranceS(): HasMany
     {
-        return $this->hasOne(Insurance::class);
+        return $this->hasMany(Insurance::class);
+    }
+
+    public function renewals(): HasMany
+    {
+        return $this->hasMany(Renewal::class);
     }
 }

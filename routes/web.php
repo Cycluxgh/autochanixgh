@@ -16,9 +16,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('customers/{customerId}/edit', Edit::class)->name('customers.edit');
     Route::get('customers/{customerId}/show', Show::class)->name('customers.show');
 
+    Route::get('companies/index', \App\Livewire\Companies\Index::class)->name('companies.index');
+    Route::get('companies/create', \App\Livewire\Companies\Create::class)->name('companies.create');
+    Route::get('companies/{companyId}/edit', \App\Livewire\Companies\Edit::class)->name('companies.edit');
+    Route::get('companies/{companyId}/show', \App\Livewire\Companies\Show::class)->name('companies.show');
+
     Route::get('drivers/index', \App\Livewire\Drivers\Index::class)->name('drivers.index');
     Route::get('drivers/create', \App\Livewire\Drivers\Create::class)->name('drivers.create');
     Route::get('drivers/{dvlaId}/edit', \App\Livewire\Drivers\Edit::class)->name('drivers.edit');
+    Route::get('drivers/{dvlaId}/show', \App\Livewire\Drivers\Show::class)->name('drivers.show');
 
     Route::get('diagnosis/index', \App\Livewire\Diagnosis\Index::class)->name('diagnosis.index');
     Route::get('diagnosis/create', \App\Livewire\Diagnosis\Create::class)->name('diagnosis.create');
@@ -26,6 +32,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('diagnosis/{diagnosisId}/show', \App\Livewire\Diagnosis\Show::class)->name('diagnosis.show');
 
     Route::get('messages/create', \App\Livewire\Messages\Create::class)->name('messages.create');
+
+    Route::get('renewals/index', \App\Livewire\Renewals\Index::class)->name('renewals.index');
+
+    Route::get('libraries/index', \App\Livewire\Libraries\Index::class)->name('libraries.index');
 });
 
 require __DIR__.'/auth.php';

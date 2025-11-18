@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Drivers;
 
-use App\Models\dvla;
+use App\Models\Dvla;
 use Livewire\Component;
 
 class Index extends Component

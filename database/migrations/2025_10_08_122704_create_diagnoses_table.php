@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('diagnoses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained()->cascadeOnDelete();
+            $table->unsignedBigInteger('customer_id')->references('id')
+                ->on('customers')
+                ->cascadeOnDelete()
+                ->nullable();
+            $table->unsignedBigInteger('company_id')->references('id')
+                ->on('companies')
+                ->cascadeOnDelete()
+                ->nullable();
+            $table->string('vehicle_number');
             $table->text('diagnosis');
             $table->softDeletes();
             $table->timestamps();
